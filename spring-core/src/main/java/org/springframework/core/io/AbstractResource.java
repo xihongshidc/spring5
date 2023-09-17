@@ -46,7 +46,9 @@ import org.springframework.util.ResourceUtils;
  * @since 28.12.2003
  */
 public abstract class AbstractResource implements Resource {
-
+//如果我们想要实现自定义的 Resource ，记住不要实现 Resource 接口，
+// 而应该继承 AbstractResource 抽象类，然后根据当前的具体资源特性覆盖相应的方法即可, 因为AbstractResource 抽象类提供了提供了很多默认的实现,
+	// 用到了模板方法的设计模式,
 	/**
 	 * This implementation checks whether a File can be opened,
 	 * falling back to whether an InputStream can be opened.

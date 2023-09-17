@@ -145,10 +145,12 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 	 * @throws ServletException if bean properties are invalid (or required
 	 * properties are missing), or if subclass initialization fails.
 	 */
+	//入口 spring 启动的时候 由于底层是基于web容器, （http 和servlet（ tomcat ，jetty ） 容器组成）
 	@Override
 	public final void init() throws ServletException {
 
 		// Set bean properties from init parameters.
+		//
 		PropertyValues pvs = new ServletConfigPropertyValues(getServletConfig(), this.requiredProperties);
 		if (!pvs.isEmpty()) {
 			try {
@@ -211,8 +213,8 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 		/**
 		 * Create new ServletConfigPropertyValues.
 		 * @param config the ServletConfig we'll use to take PropertyValues from
-		 * @param requiredProperties set of property names we need, where
-		 * we can't accept default values
+		 * @param requiredProperties
+		 * we can't accept default valuesset of property names we need, where
 		 * @throws ServletException if any required properties are missing
 		 */
 		public ServletConfigPropertyValues(ServletConfig config, Set<String> requiredProperties)
@@ -221,10 +223,11 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 			Set<String> missingProps = (!CollectionUtils.isEmpty(requiredProperties) ?
 					new HashSet<>(requiredProperties) : null);
 
+			//获取初始化参数，
 			Enumeration<String> paramNames = config.getInitParameterNames();
 			while (paramNames.hasMoreElements()) {
 				String property = paramNames.nextElement();
-				Object value = config.getInitParameter(property);
+				Object value = config.getInitParameter(property);//初始化值，
 				addPropertyValue(new PropertyValue(property, value));
 				if (missingProps != null) {
 					missingProps.remove(property);

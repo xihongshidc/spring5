@@ -5,6 +5,6 @@
 @NonNullApi
 @NonNullFields
 package org.springframework.oxm.xstream;
-
+//xml 和对象的转换
 import org.springframework.lang.NonNullApi;
 import org.springframework.lang.NonNullFields;

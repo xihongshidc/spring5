@@ -1,5 +1,9 @@
 package com.dc.springTest;
 
+import org.springframework.util.StringUtils;
+
+import java.util.HashSet;
+
 /**
  * Description:
  * Author: duancong
@@ -15,6 +19,14 @@ public class User {
 	}
 
 	public User() {
+	}
+	public static void main(String[] args) {
+		HashSet<String> es = new HashSet<>();
+		es.add("ddd");
+		es.add("adc");
+		es.add("moed");
+		es.add("emode");
+		System.out.println(StringUtils.collectionToDelimitedString(es, ", "));
 	}
 
 	public String getName() {

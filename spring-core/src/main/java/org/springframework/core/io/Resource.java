@@ -49,7 +49,7 @@ import org.springframework.lang.Nullable;
  * @see ByteArrayResource
  * @see InputStreamResource
  */
-public interface Resource extends InputStreamSource {
+public interface Resource extends InputStreamSource {//spring 框架所有的资源抽象和访问接口 ,
 
 	/**
 	 * Determine whether this resource actually exists in physical form.
@@ -57,7 +57,7 @@ public interface Resource extends InputStreamSource {
 	 * existence of a {@code Resource} handle only guarantees a valid
 	 * descriptor handle.
 	 */
-	boolean exists();
+	boolean exists();//资源是否存在
 
 	/**
 	 * Indicate whether non-empty contents of this resource can be read via
@@ -72,7 +72,7 @@ public interface Resource extends InputStreamSource {
 	 */
 	default boolean isReadable() {
 		return exists();
-	}
+	}//资源是否可读
 
 	/**
 	 * Indicate whether this resource represents a handle with an open stream.
@@ -82,7 +82,7 @@ public interface Resource extends InputStreamSource {
 	 */
 	default boolean isOpen() {
 		return false;
-	}
+	}//资源是否被一个stream 打开了.
 
 	/**
 	 * Determine whether this resource represents a file in a file system.
@@ -94,14 +94,14 @@ public interface Resource extends InputStreamSource {
 	 */
 	default boolean isFile() {
 		return false;
-	}
+	}//  是否为File
 
 	/**
 	 * Return a URL handle for this resource.
 	 * @throws IOException if the resource cannot be resolved as URL,
 	 * i.e. if the resource is not available as descriptor
 	 */
-	URL getURL() throws IOException;
+	URL getURL() throws IOException; // 资源的URL
 
 	/**
 	 * Return a URI handle for this resource.
@@ -109,7 +109,7 @@ public interface Resource extends InputStreamSource {
 	 * i.e. if the resource is not available as descriptor
 	 * @since 2.5
 	 */
-	URI getURI() throws IOException;
+	URI getURI() throws IOException;    //URI
 
 	/**
 	 * Return a File handle for this resource.
@@ -118,7 +118,7 @@ public interface Resource extends InputStreamSource {
 	 * @throws IOException in case of general resolution/reading failures
 	 * @see #getInputStream()
 	 */
-	File getFile() throws IOException;
+	File getFile() throws IOException; // 返回资源的File 句柄,
 
 	/**
 	 * Return a {@link ReadableByteChannel}.
@@ -140,14 +140,14 @@ public interface Resource extends InputStreamSource {
 	 * @throws IOException if the resource cannot be resolved
 	 * (in the file system or as some other known physical resource type)
 	 */
-	long contentLength() throws IOException;
+	long contentLength() throws IOException;//资源的内容长度
 
 	/**
 	 * Determine the last-modified timestamp for this resource.
 	 * @throws IOException if the resource cannot be resolved
 	 * (in the file system or as some other known physical resource type)
 	 */
-	long lastModified() throws IOException;
+	long lastModified() throws IOException;//资源的最后修改时间
 
 	/**
 	 * Create a resource relative to this resource.
@@ -155,7 +155,7 @@ public interface Resource extends InputStreamSource {
 	 * @return the resource handle for the relative resource
 	 * @throws IOException if the relative resource cannot be determined
 	 */
-	Resource createRelative(String relativePath) throws IOException;
+	Resource createRelative(String relativePath) throws IOException;//根据资源的相对路径,创建新资源.
 
 	/**
 	 * Determine a filename for this resource, i.e. typically the last
@@ -164,7 +164,7 @@ public interface Resource extends InputStreamSource {
 	 * have a filename.
 	 */
 	@Nullable
-	String getFilename();
+	String getFilename();//文件名
 
 	/**
 	 * Return a description for this resource,
@@ -173,6 +173,6 @@ public interface Resource extends InputStreamSource {
 	 * from their {@code toString} method.
 	 * @see Object#toString()
 	 */
-	String getDescription();
+	String getDescription();//资源的描述
 
 }
