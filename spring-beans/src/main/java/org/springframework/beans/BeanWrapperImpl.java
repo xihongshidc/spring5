@@ -321,7 +321,7 @@ public class BeanWrapperImpl extends AbstractNestablePropertyAccessor implements
 				});
 				try {
 					AccessController.doPrivileged((PrivilegedExceptionAction<Object>)
-							() -> writeMethod.invoke(getWrappedInstance(), value), acc);
+							() -> writeMethod.invoke(getWrappedInstance(), value), acc);//反射 赋值.
 				}
 				catch (PrivilegedActionException ex) {
 					throw ex.getException();

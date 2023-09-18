@@ -861,7 +861,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	@Override
-	public void preInstantiateSingletons() throws BeansException {
+	public void preInstantiateSingletons() throws BeansException {//容器启动时提前初始化单例bean
 		if (logger.isTraceEnabled()) {
 			logger.trace("Pre-instantiating singletons in " + this);
 		}
@@ -870,7 +870,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		// While this may not be part of the regular factory bootstrap, it does otherwise work fine.
 		List<String> beanNames = new ArrayList<>(this.beanDefinitionNames);
 
-		// Trigger initialization of all non-lazy singleton beans...
+		// Trigger initialization of all non-lazy singleton beans...实例化所有非懒加载的单例bean
 		for (String beanName : beanNames) {
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
@@ -906,7 +906,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				SmartInitializingSingleton smartSingleton = (SmartInitializingSingleton) singletonInstance;
 				if (System.getSecurityManager() != null) {
 					AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-						smartSingleton.afterSingletonsInstantiated();
+						smartSingleton.afterSingletonsInstantiated();//实例化后置方法 回调
 						return null;
 					}, getAccessControlContext());
 				}
@@ -981,16 +981,17 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				}
 			}
 			else {
+				//添加beanDefinitionMap |  beanDefinitionNames
 				// Still in startup registration phase
-				this.beanDefinitionMap.put(beanName, beanDefinition);
+				this.beanDefinitionMap.put(beanName, beanDefinition);//Key: beanName |  Value:beanDefinition
 				this.beanDefinitionNames.add(beanName);
 				removeManualSingletonName(beanName);
 			}
 			this.frozenBeanDefinitionNames = null;
 		}
-
+		//存在bean定义信息, 并且存在单例bean
 		if (existingDefinition != null || containsSingleton(beanName)) {
-			resetBeanDefinition(beanName);
+			resetBeanDefinition(beanName);  //重置bean定义,并删除单例bean
 		}
 		else if (isConfigurationFrozen()) {
 			clearByTypeCache();

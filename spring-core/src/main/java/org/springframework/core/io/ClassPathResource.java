@@ -75,7 +75,7 @@ public class ClassPathResource extends AbstractFileResolvingResource {
 	 * or {@code null} for the thread context class loader
 	 * @see ClassLoader#getResourceAsStream(String)
 	 */
-	public ClassPathResource(String path, @Nullable ClassLoader classLoader) {
+	public ClassPathResource(String path, @Nullable ClassLoader classLoader) {//@Nullable 可以为 null
 		Assert.notNull(path, "Path must not be null");
 		String pathToUse = StringUtils.cleanPath(path);
 		if (pathToUse.startsWith("/")) {

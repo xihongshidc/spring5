@@ -22,6 +22,7 @@ public class Test {
 		Class<?> user1 = Class.forName("com.dc.springTest.User");
 		Method[] methods = user1.getMethods();
 		for (Method method : methods) {
+			System.out.println("1111"+ method);
 
 		}
 		Field[] declaredFields = user1.getDeclaredFields();
