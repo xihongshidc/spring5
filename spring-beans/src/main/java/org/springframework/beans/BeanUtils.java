@@ -186,6 +186,7 @@ public abstract class BeanUtils {
 		try {
 			ReflectionUtils.makeAccessible(ctor);
 			if (KotlinDetector.isKotlinReflectPresent() && KotlinDetector.isKotlinType(ctor.getDeclaringClass())) {
+				//构造方法实例化
 				return KotlinDelegate.instantiateClass(ctor, args);
 			}
 			else {
@@ -615,9 +616,9 @@ public abstract class BeanUtils {
 	 */
 	public static boolean isSimpleValueType(Class<?> type) {
 		return (Void.class != type && void.class != type &&
-				(ClassUtils.isPrimitiveOrWrapper(type) ||
+				(ClassUtils.isPrimitiveOrWrapper(type) ||//8个基本类型外加 8个对应的包装类型也为简单类型.
 				Enum.class.isAssignableFrom(type) ||
-				CharSequence.class.isAssignableFrom(type) ||
+				CharSequence.class.isAssignableFrom(type) ||//注意这里简单类型 包含字符序列, 包含字符串类型
 				Number.class.isAssignableFrom(type) ||
 				Date.class.isAssignableFrom(type) ||
 				Temporal.class.isAssignableFrom(type) ||

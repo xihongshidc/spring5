@@ -94,7 +94,7 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	 * @see #createBean
 	 * @see #autowire
 	 */
-	int AUTOWIRE_CONSTRUCTOR = 3;
+	int AUTOWIRE_CONSTRUCTOR = 3;//构造函数依赖注入
 
 	/**
 	 * Constant that indicates determining an appropriate autowire strategy

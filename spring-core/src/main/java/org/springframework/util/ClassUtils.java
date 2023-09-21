@@ -543,11 +543,11 @@ public abstract class ClassUtils {
 		if (lhsType.isAssignableFrom(rhsType)) {
 			return true;
 		}
-		if (lhsType.isPrimitive()) {
+		if (lhsType.isPrimitive()) {//基本类型  与包装类型 比较,
 			Class<?> resolvedPrimitive = primitiveWrapperTypeMap.get(rhsType);
 			return (lhsType == resolvedPrimitive);
 		}
-		else {
+		else {// 包装类型 与 基本类型比较
 			Class<?> resolvedWrapper = primitiveTypeToWrapperMap.get(rhsType);
 			return (resolvedWrapper != null && lhsType.isAssignableFrom(resolvedWrapper));
 		}
