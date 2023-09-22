@@ -490,7 +490,7 @@ public abstract class ClassUtils {
 	 * @return {@code true} if the given class represents a primitive, void, or
 	 * a wrapper class
 	 */
-	public static boolean isPrimitiveOrWrapper(Class<?> clazz) {
+	public static boolean isPrimitiveOrWrapper(Class<?> clazz) {//检查是否是 基本类型或者是其对应包装类型,
 		Assert.notNull(clazz, "Class must not be null");
 		return (clazz.isPrimitive() || isPrimitiveWrapper(clazz));
 	}
@@ -540,16 +540,16 @@ public abstract class ClassUtils {
 	public static boolean isAssignable(Class<?> lhsType, Class<?> rhsType) {
 		Assert.notNull(lhsType, "Left-hand side type must not be null");
 		Assert.notNull(rhsType, "Right-hand side type must not be null");
-		if (lhsType.isAssignableFrom(rhsType)) {
+		if (lhsType.isAssignableFrom(rhsType)) {//lhsType 接口必须是 rhsType 的父类或者父接口, 返回才返回true
 			return true;
 		}
-		if (lhsType.isPrimitive()) {//基本类型  与包装类型 比较,
+		if (lhsType.isPrimitive()) {//基本类型  与包装类型 比较, 如果lhsType是 包装类型, 比较他们基本类型是否相同,
 			Class<?> resolvedPrimitive = primitiveWrapperTypeMap.get(rhsType);
 			return (lhsType == resolvedPrimitive);
 		}
-		else {// 包装类型 与 基本类型比较
+		else {//   lhsType不是包装类型
 			Class<?> resolvedWrapper = primitiveTypeToWrapperMap.get(rhsType);
-			return (resolvedWrapper != null && lhsType.isAssignableFrom(resolvedWrapper));
+			return (resolvedWrapper != null && lhsType.isAssignableFrom(resolvedWrapper));//lhsType 是否是包装类型resolvedWrapper的父类或者父接口
 		}
 	}
 

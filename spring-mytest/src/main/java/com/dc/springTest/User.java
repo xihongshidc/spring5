@@ -1,5 +1,10 @@
 package com.dc.springTest;
 
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
@@ -9,9 +14,16 @@ import java.util.HashSet;
  * Author: duancong
  * Date: 2023/9/12 16:36
  */
-public class User {
+public class User implements BeanFactoryAware , ApplicationContextAware {
 	private String name;
 	private String age;
+	private String beanName;
+
+	private BeanFactory beanFactory;
+
+	private ClassLoader classLoader;
+
+	private ApplicationContext applicationContext;
 
 	public User(String name, String age) {
 		this.name = name;
@@ -51,5 +63,18 @@ public class User {
 
 	public void setAge(String age) {
 		this.age = age;
+	}
+
+	@Override
+	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+		System.out.println("调用 beanFactory :" + beanFactory);
+		this.beanFactory=beanFactory;
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		System.out.println("调用 applicationContext :" + applicationContext);
+		this.applicationContext=applicationContext;
+
 	}
 }

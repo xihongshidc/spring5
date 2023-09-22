@@ -74,7 +74,7 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 		this.embeddedValueResolver = new EmbeddedValueResolver(applicationContext.getBeanFactory());
 	}
 
-
+	//初始化前置 会执行一些Aware接口实现的方法,
 	@Override
 	@Nullable
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -90,19 +90,20 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 			acc = this.applicationContext.getBeanFactory().getAccessControlContext();
 		}
 
-		if (acc != null) {
+		if (acc != null) {//安全的情况下
 			AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
 				invokeAwareInterfaces(bean);
 				return null;
 			}, acc);
 		}
 		else {
+			//执行 Aware ....
 			invokeAwareInterfaces(bean);
 		}
 
 		return bean;
 	}
-
+	//执行Aware 接口
 	private void invokeAwareInterfaces(Object bean) {
 		if (bean instanceof EnvironmentAware) {
 			((EnvironmentAware) bean).setEnvironment(this.applicationContext.getEnvironment());
@@ -110,15 +111,18 @@ class ApplicationContextAwareProcessor implements BeanPostProcessor {
 		if (bean instanceof EmbeddedValueResolverAware) {
 			((EmbeddedValueResolverAware) bean).setEmbeddedValueResolver(this.embeddedValueResolver);
 		}
+		// 底层资源加载器
 		if (bean instanceof ResourceLoaderAware) {
 			((ResourceLoaderAware) bean).setResourceLoader(this.applicationContext);
 		}
+		//应用事件
 		if (bean instanceof ApplicationEventPublisherAware) {
 			((ApplicationEventPublisherAware) bean).setApplicationEventPublisher(this.applicationContext);
 		}
 		if (bean instanceof MessageSourceAware) {
 			((MessageSourceAware) bean).setMessageSource(this.applicationContext);
 		}
+		//进入 ...
 		if (bean instanceof ApplicationContextAware) {
 			((ApplicationContextAware) bean).setApplicationContext(this.applicationContext);
 		}

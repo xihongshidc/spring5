@@ -35,6 +35,7 @@ public class PropertiesBeanDefinitionReaderTests {
 
 	@Test
 	public void withSimpleConstructorArg() {
+		//标记一下
 		this.reader.loadBeanDefinitions(new ClassPathResource("simpleConstructorArg.properties", getClass()));
 		TestBean bean = (TestBean) this.beanFactory.getBean("testBean");
 		assertThat(bean.getName()).isEqualTo("Rob Harrop");

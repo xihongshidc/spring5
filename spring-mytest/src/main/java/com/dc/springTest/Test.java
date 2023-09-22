@@ -18,7 +18,7 @@ public class Test {
 	public static void main(String[] args) throws ClassNotFoundException {
 
 //		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(Conifguration.class);
-		AnnotationConfigApplicationContext apx = new AnnotationConfigApplicationContext(UserFactory.class);
+		AnnotationConfigApplicationContext apx = new AnnotationConfigApplicationContext(Conifguration.class);
 //		User user= annotationConfigApplicationContext.getBean(User.class);
 		Object bean = apx.getBean(User.class, User.class);
 		System.out.println(bean instanceof String);

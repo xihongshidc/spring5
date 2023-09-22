@@ -186,7 +186,7 @@ public abstract class BeanUtils {
 		try {
 			ReflectionUtils.makeAccessible(ctor);
 			if (KotlinDetector.isKotlinReflectPresent() && KotlinDetector.isKotlinType(ctor.getDeclaringClass())) {
-				//构造方法实例化
+				//
 				return KotlinDelegate.instantiateClass(ctor, args);
 			}
 			else {
@@ -194,7 +194,7 @@ public abstract class BeanUtils {
 				Assert.isTrue(args.length <= parameterTypes.length, "Can't specify more arguments than constructor parameters");
 				Object[] argsWithDefaultValues = new Object[args.length];
 				for (int i = 0 ; i < args.length; i++) {
-					if (args[i] == null) {
+					if (args[i] == null) {//如果所提供的参数少于 构造函数中所对应的参数, 少于的参数 如果是基础类型,附上默认值,如果不是 则赋null
 						Class<?> parameterType = parameterTypes[i];
 						argsWithDefaultValues[i] = (parameterType.isPrimitive() ? DEFAULT_TYPE_VALUES.get(parameterType) : null);
 					}

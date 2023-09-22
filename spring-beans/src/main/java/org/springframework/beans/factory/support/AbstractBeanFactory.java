@@ -390,6 +390,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 			}
 			catch (BeansException ex) {
+				// 创建完bean之后才会删除,
 				cleanupAfterBeanCreationFailure(beanName);
 				throw ex;
 			}
@@ -937,6 +938,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		return result;
 	}
 
+	//入口添加后置处理器, 删除老的,在末尾添加新的
 	@Override
 	public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
 		Assert.notNull(beanPostProcessor, "BeanPostProcessor must not be null");
@@ -1771,12 +1773,13 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * @return {@code true} if actually removed, {@code false} otherwise
 	 */
 	protected boolean removeSingletonIfCreatedForTypeCheckOnly(String beanName) {
+		// 如果这个bean不在创建中  比如是ForTypeCheckOnly的  那就移除掉
 		if (!this.alreadyCreated.contains(beanName)) {
-			removeSingleton(beanName);
+			removeSingleton(beanName);//说明 这个bean 实际已经创建过了, 但是目前我还依赖他,所以这个bean会被标记,
 			return true;
 		}
 		else {
-			return false;
+			return false;// 返回false 如果此时候beanName还没有创建好，this.alreadyCreated.contains(beanName)=true 就返回false
 		}
 	}
 

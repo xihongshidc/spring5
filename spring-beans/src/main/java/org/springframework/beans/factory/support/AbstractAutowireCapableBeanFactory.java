@@ -412,6 +412,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		Object result = existingBean;
 		for (BeanPostProcessor processor : getBeanPostProcessors()) {
+			// 执行 初始化前置处理器方法
 			Object current = processor.postProcessBeforeInitialization(result, beanName);
 			if (current == null) {
 				return result;
@@ -428,7 +429,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object result = existingBean;
 		//遍历所有的 BeanPostProcessor
 		for (BeanPostProcessor processor : getBeanPostProcessors()) {
-			// 处理
+			// 后置处理
 			Object current = processor.postProcessAfterInitialization(result, beanName);
 			// 返回空
 			if (current == null) {
@@ -615,21 +616,34 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 						mbd.getResourceDescription(), beanName, "Initialization of bean failed", ex);
 			}
 		}
-
+		//只有在存在循环依赖,  这一步会将完整的初始化对象放入缓存
 		if (earlySingletonExposure) {
+			// false 表示不在去三级缓存中查了,  但此时二级缓存也没有数据, 说明这时候就需要比较exposedObject 和bean 是否相同,
+			// 前者是后者经过初始化阶段得到的对象 , 如果相等 ,那么 说明此时bean没有变化, 属性注入前,
+			// 他将bean 对象的工厂注入的三级缓存,此时获取如果有获取bean的操作那么其实获取到的就是这个bean 对象
 			Object earlySingletonReference = getSingleton(beanName, false);
 			if (earlySingletonReference != null) {
-				if (exposedObject == bean) {
+				if (exposedObject == bean) {// 如果 exposedObject 没有在初始化方法中被改变，也就是没有被增强 (没有被代理)
 					exposedObject = earlySingletonReference;
 				}
+				// allowRawInjectionDespiteWrapping这个值默认是false
+				// hasDependentBean：若它有依赖的bean 那就需要继续校验了~~~(若没有依赖的 就放过它~)
 				else if (!this.allowRawInjectionDespiteWrapping && hasDependentBean(beanName)) {
+					// 拿到它所依赖的Bean们~~~~ 下面会遍历一个一个的去看~~
 					String[] dependentBeans = getDependentBeans(beanName);
 					Set<String> actualDependentBeans = new LinkedHashSet<>(dependentBeans.length);
 					for (String dependentBean : dependentBeans) {
+						// 一个个检查它所以Bean
+						// removeSingletonIfCreatedForTypeCheckOnly这个放见下面  在AbstractBeanFactory里面
+						// 简单的说，它如果判断到该dependentBean并没有在创建中的了的情况下,那就把它从所有缓存中移除~~~  并且返回true
+						// 否则（比如确实在创建中） 那就返回false 进入我们的if里面~  表示所谓的真正依赖
 						if (!removeSingletonIfCreatedForTypeCheckOnly(dependentBean)) {
+							//（解释：就是真的需要依赖它先实例化，才能实例化自己的依赖）
 							actualDependentBeans.add(dependentBean);
 						}
 					}
+					// 若存在真正依赖，那就报错（不要等到内存移除你才报错，那是非常不友好的）
+					// 这个异常是BeanCurrentlyInCreationException，报错日志也稍微留意一下，方便定位错误~
 					if (!actualDependentBeans.isEmpty()) {
 						throw new BeanCurrentlyInCreationException(beanName,
 								"Bean with name '" + beanName + "' has been injected into other beans [" +
@@ -1123,8 +1137,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
 				Class<?> targetType = determineTargetType(beanName, mbd);
 				if (targetType != null) {
+					//实例化前置
 					bean = applyBeanPostProcessorsBeforeInstantiation(targetType, beanName);
 					if (bean != null) {//如果bean存在
+						//执行初始化后置
 						bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
 					}
 				}
@@ -1805,14 +1821,14 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * @see #applyBeanPostProcessorsAfterInitialization
 	 */
 	protected Object initializeBean(String beanName, Object bean, @Nullable RootBeanDefinition mbd) {
-		if (System.getSecurityManager() != null) {
+		if (System.getSecurityManager() != null) {//安全状态下
 			AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-				invokeAwareMethods(beanName, bean);
+				invokeAwareMethods(beanName, bean);//Aware 接口方法
 				return null;
 			}, getAccessControlContext());
 		}
 		else {
-			invokeAwareMethods(beanName, bean);
+			invokeAwareMethods(beanName, bean);//Aware 接口方法
 		}
 
 		Object wrappedBean = bean;
@@ -1822,7 +1838,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		try {
-			invokeInitMethods(beanName, wrappedBean, mbd);
+			invokeInitMethods(beanName, wrappedBean, mbd);  //初始化方法
 		}
 		catch (Throwable ex) {
 			throw new BeanCreationException(
@@ -1839,7 +1855,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	private void invokeAwareMethods(String beanName, Object bean) {
 		if (bean instanceof Aware) {
-			if (bean instanceof BeanNameAware) {
+			if (bean instanceof BeanNameAware) {//设置beanName
 				((BeanNameAware) bean).setBeanName(beanName);
 			}
 			if (bean instanceof BeanClassLoaderAware) {
@@ -1848,7 +1864,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					((BeanClassLoaderAware) bean).setBeanClassLoader(bcl);
 				}
 			}
-			if (bean instanceof BeanFactoryAware) {
+			if (bean instanceof BeanFactoryAware) {//设置beanFactory
 				((BeanFactoryAware) bean).setBeanFactory(AbstractAutowireCapableBeanFactory.this);
 			}
 		}
