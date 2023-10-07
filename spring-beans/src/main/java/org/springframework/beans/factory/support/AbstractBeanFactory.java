@@ -1960,7 +1960,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * @param mbd the merged bean definition for the bean
 	 * @param args explicit arguments to use for constructor or factory method invocation
 	 * @return a new instance of the bean
-	 * @throws BeanCreationException if the bean could not be created
+	 * @throws BeanCreationException if the bean co uld not be created
 	 */
 	protected abstract Object createBean(String beanName, RootBeanDefinition mbd, @Nullable Object[] args)
 			throws BeanCreationException;

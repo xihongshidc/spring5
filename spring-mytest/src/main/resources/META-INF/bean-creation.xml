@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+<!--	静态工厂, 静态方法实例化 bean-->
+<!--	<bean id="user-create" class="com.dc.springTest.User" factory-method="create"></bean>-->
+<!--	Bean工厂方法 , 实例(Bean)方法实例化 Bean-->
+	<bean id="user-create" class="com.dc.springTest.UserFactory1" factory-bean="UserFactory1" factory-method="create"></bean>
+	<bean id="UserFactory1" class="com.dc.springTest.UserFactory1"></bean>
+
+<!-- 	FactoryBean 创建bean -->
+	<bean id="UserFactory" class="com.dc.springTest.UserFactory"></bean>
+</beans>

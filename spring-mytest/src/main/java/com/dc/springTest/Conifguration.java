@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Conifguration {
 
-	@Bean
+	@Bean({"duancong-user","user"})
 	public User init(){
 		User user = new User();
 		user.setAge("22");
