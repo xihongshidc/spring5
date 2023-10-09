@@ -6,7 +6,11 @@
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<import resource="depedence.xml"></import>
-	<bean id="SuperUser" class="com.dc.springTest.SuperUser" autowire="byType"/>
+	<bean id="userHolder" class="com.dc.springTest.injection.UserHolder" >
+			<constructor-arg ref="user"/>
+<!--		构造器注入有顺序-->
+	</bean>
+
 
 
 </beans>

@@ -28,6 +28,7 @@ public class SuperUser extends User {
 		return "SuperUser{" +
 				"beanFactory=" + beanFactory +
 				", contextObjectFactory=" + contextObjectFactory +
+				", user="+super.toString()+
 				'}';
 	}
 

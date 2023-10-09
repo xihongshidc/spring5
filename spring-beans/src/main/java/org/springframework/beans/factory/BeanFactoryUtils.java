@@ -331,7 +331,7 @@ public abstract class BeanFactoryUtils {
 			HierarchicalBeanFactory hbf = (HierarchicalBeanFactory) lbf;
 			if (hbf.getParentBeanFactory() instanceof ListableBeanFactory) {
 				Map<String, T> parentResult = beansOfTypeIncludingAncestors(
-						(ListableBeanFactory) hbf.getParentBeanFactory(), type);
+						(ListableBeanFactory) hbf.getParentBeanFactory(), type);// 先找 parent去
 				parentResult.forEach((beanName, beanInstance) -> {
 					if (!result.containsKey(beanName) && !hbf.containsLocalBean(beanName)) {
 						result.put(beanName, beanInstance);
@@ -476,7 +476,7 @@ public abstract class BeanFactoryUtils {
 	 * @throws BeansException if the bean could not be created
 	 * @see ListableBeanFactory#getBeansOfType(Class)
 	 */
-	public static <T> T beanOfType(ListableBeanFactory lbf, Class<T> type) throws BeansException {
+	public static <T> T beanOfType(ListableBeanFactory lbf, Class<T> type) throws BeansException {//单一类型
 		Assert.notNull(lbf, "ListableBeanFactory must not be null");
 		Map<String, T> beansOfType = lbf.getBeansOfType(type);
 		return uniqueBean(type, beansOfType);

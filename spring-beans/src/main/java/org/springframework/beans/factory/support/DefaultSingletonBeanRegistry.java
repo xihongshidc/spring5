@@ -567,7 +567,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		Set<String> dependencies;
 		synchronized (this.dependentBeanMap) {
 			// Within full synchronization in order to guarantee a disconnected Set
-			dependencies = this.dependentBeanMap.remove(beanName);
+			dependencies = this.dependentBeanMap.remove(beanName);//删除依赖的bean
 		}
 		if (dependencies != null) {
 			if (logger.isTraceEnabled()) {
@@ -581,7 +581,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		// Actually destroy the bean now...
 		if (bean != null) {
 			try {
-				bean.destroy();
+				bean.destroy();//实现销毁bean 接口
 			}
 			catch (Throwable ex) {
 				if (logger.isWarnEnabled()) {

@@ -31,7 +31,7 @@ import org.springframework.lang.Nullable;
  * @since 07.07.2003
  * @see org.springframework.beans.factory.config.ConfigurableBeanFactory#setParentBeanFactory
  */
-public interface HierarchicalBeanFactory extends BeanFactory {
+public interface HierarchicalBeanFactory extends BeanFactory {  //有层次的BeanFactory
 
 	/**
 	 * Return the parent bean factory, or {@code null} if there is none.

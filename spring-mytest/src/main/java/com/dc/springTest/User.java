@@ -4,10 +4,14 @@ import com.dc.springTest.annotation.Super;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.HashSet;
 
 /**
@@ -16,7 +20,7 @@ import java.util.HashSet;
  * Date: 2023/9/12 16:36
  */
 @Super
-public class User implements BeanFactoryAware , ApplicationContextAware {
+public class User implements BeanFactoryAware , ApplicationContextAware, InitializingBean , DisposableBean {// 基于Aware 接口实现回调注入
 	private String name;
 	private String age;
 	private String beanName;
@@ -111,5 +115,41 @@ public class User implements BeanFactoryAware , ApplicationContextAware {
 		System.out.println("调用 applicationContext :" + applicationContext);
 		this.applicationContext=applicationContext;
 
+	}
+
+
+	//执行顺序是 PostConstruct  ->  InitializingBean  ->  initmethod(自定义方法)
+	@PostConstruct
+	public void init(){
+		System.out.println("@PostConstruct 注解 :::  初始化");
+	}
+
+	public void initdemo(){
+		System.out.println("initmethod  :::  初始化");
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		System.out.println("InitializingBean ::: 初始化");
+	}
+
+	@PreDestroy
+	public void preDestory(){
+		System.out.println("@PreDestroy :::  销毁中");
+	}
+
+	public void predes(){
+		System.out.println("自定义销毁方法:::  销毁中");
+	}
+
+	@Override
+	public void destroy() throws Exception {
+		System.out.println("DisposableBean  :::  销毁中");
+	}
+
+	@Override
+	public void finalize() throws Throwable {
+		super.finalize();
+		System.out.println( " Gc " );
 	}
 }

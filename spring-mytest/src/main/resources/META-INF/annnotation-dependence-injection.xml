@@ -6,7 +6,10 @@
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<import resource="depedence.xml"></import>
-	<bean id="SuperUser" class="com.dc.springTest.SuperUser" autowire="byType"/>
+	<bean id= "user1" class="com.dc.springTest.SuperUser" primary="true">
+		<property name="name" value="小葱"></property>
+		<property name="age" value="20"></property>
+	</bean>
 
 
 </beans>

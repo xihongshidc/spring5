@@ -548,7 +548,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
-				finishBeanFactoryInitialization(beanFactory);
+				finishBeanFactoryInitialization(beanFactory); //初始化所有剩余的非Lazy 单例
 
 				// Last step: publish corresponding event.
 				finishRefresh();
@@ -875,7 +875,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// Allow for caching all bean definition metadata, not expecting further changes.
 		beanFactory.freezeConfiguration();
 
-		// Instantiate all remaining (non-lazy-init) singletons.
+		// Instantiate all remaining (non-lazy-init) singletons. 初始化非懒加载的单例
 		beanFactory.preInstantiateSingletons();
 	}
 
@@ -1027,7 +1027,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			}
 
 			// Destroy all cached singletons in the context's BeanFactory.
-			destroyBeans();
+			destroyBeans();//销毁bean
 
 			// Close the state of this context itself.
 			closeBeanFactory();
@@ -1124,6 +1124,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	@Override
 	public <T> T getBean(Class<T> requiredType) throws BeansException {
 		assertBeanFactoryActive();
+		//委派给BeanFactory 去获取bean
 		return getBeanFactory().getBean(requiredType);
 	}
 
