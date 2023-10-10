@@ -22,10 +22,15 @@ public class UserHolder {
 	public UserHolder() {
 	}
 
+	public UserHolder(Long id) {
+		this.id = id;
+	}
+
 	@Override
 	public String toString() {
 		return "UserHolder{" +
 				"user=" + user +
+				", id=" + id +
 				'}';
 	}
 
