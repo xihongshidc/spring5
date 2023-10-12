@@ -76,7 +76,7 @@ final class AnnotationTypeMappings {
 		while (!queue.isEmpty()) {
 			AnnotationTypeMapping mapping = queue.removeFirst();
 			this.mappings.add(mapping);
-			addMetaAnnotationsToQueue(queue, mapping);
+			addMetaAnnotationsToQueue(queue, mapping);//添加元注解（注解上的注解） 到队列中
 		}
 	}
 

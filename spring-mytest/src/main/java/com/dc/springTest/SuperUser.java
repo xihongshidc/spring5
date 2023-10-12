@@ -4,6 +4,9 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.ApplicationContext;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 /**
  * Description:
  * Author: duancong
@@ -41,4 +44,13 @@ public class SuperUser extends User {
 	public void setBeanFactory(BeanFactory beanFactory) {
 		this.beanFactory = beanFactory;
 	}
+	@PostConstruct
+	public void init2(){
+		System.out.println("@PostConstruct SuperUser init2 :::  初始化");
+	}
+	@PreDestroy
+	public void preDestory1(){
+		System.out.println("preDestory1 :::  销毁中");
+	}
+
 }

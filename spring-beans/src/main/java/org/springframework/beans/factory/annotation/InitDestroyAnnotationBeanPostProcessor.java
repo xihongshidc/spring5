@@ -154,6 +154,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 		LifecycleMetadata metadata = findLifecycleMetadata(bean.getClass());
 		try {
+			//初始化前执行的 的方法,@PostConst
 			metadata.invokeInitMethods(bean, beanName);
 		}
 		catch (InvocationTargetException ex) {
@@ -208,6 +209,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 				metadata = this.lifecycleMetadataCache.get(clazz);
 				if (metadata == null) {
 					metadata = buildLifecycleMetadata(clazz);
+					//生命周期方法 加入 缓存
 					this.lifecycleMetadataCache.put(clazz, metadata);
 				}
 				return metadata;
@@ -245,7 +247,9 @@ public class InitDestroyAnnotationBeanPostProcessor
 				}
 			});
 
+			//这里将父类的生命周期方法放到的索引0 的位置上, 所以在执行生命周期方法时会顺序从父类开始执行
 			initMethods.addAll(0, currInitMethods);
+			// 可以看出 销毁方法的却没有这样的执行顺序,父类 后执行销毁方法.
 			destroyMethods.addAll(currDestroyMethods);
 			targetClass = targetClass.getSuperclass();
 		}
@@ -384,6 +388,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 			return this.identifier;
 		}
 
+		//生命周期 invoke反射 调用方法
 		public void invoke(Object target) throws Throwable {
 			ReflectionUtils.makeAccessible(this.method);
 			this.method.invoke(target, (Object[]) null);

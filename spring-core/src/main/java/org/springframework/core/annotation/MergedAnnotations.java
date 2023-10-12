@@ -443,7 +443,7 @@ public interface MergedAnnotations extends Iterable<MergedAnnotation<Annotation>
 		 * {@link Inherited @Inherited} annotations and without searching
 		 * superclasses or implemented interfaces.
 		 */
-		DIRECT,
+		DIRECT,//只查找直接声明的注释 ,不考虑父类的或者实现的接口.
 
 		/**
 		 * Find all directly declared annotations as well as any

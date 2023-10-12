@@ -195,7 +195,7 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 	 * respectively.
 	 */
 	public CommonAnnotationBeanPostProcessor() {
-		setOrder(Ordered.LOWEST_PRECEDENCE - 3);
+		setOrder(Ordered.LOWEST_PRECEDENCE - 3);    //倒数第4位执行
 		setInitAnnotationType(PostConstruct.class);
 		setDestroyAnnotationType(PreDestroy.class);
 		ignoreResourceType("javax.xml.ws.WebServiceContext");
@@ -363,6 +363,7 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 		do {
 			final List<InjectionMetadata.InjectedElement> currElements = new ArrayList<>();
 
+			//查找目标类
 			ReflectionUtils.doWithLocalFields(targetClass, field -> {
 				if (webServiceRefClass != null && field.isAnnotationPresent(webServiceRefClass)) {
 					if (Modifier.isStatic(field.getModifiers())) {
@@ -429,7 +430,7 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 			});
 
 			elements.addAll(0, currElements);
-			targetClass = targetClass.getSuperclass();
+			targetClass = targetClass.getSuperclass();//子类获取完了之后获取父类的属性,
 		}
 		while (targetClass != null && targetClass != Object.class);
 

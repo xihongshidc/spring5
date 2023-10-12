@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 
+import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,9 +21,9 @@ import java.util.Optional;
  */
 public class AutowiredAnnotationDependencyInjectDemo {
 
-	@Autowired//会根据类型进行匹配
-	@Lazy
-	private UserHolder userHolder3;
+//	@Autowired//会根据类型进行匹配
+//	@Lazy//加了Lazy 注解实际注入的是一个代理对象.
+//	private UserHolder userHolder3;
 
 //	@Autowired//会根据类型进行匹配
 //	private List<UserHolder> users;
@@ -32,6 +33,9 @@ public class AutowiredAnnotationDependencyInjectDemo {
 
 	@Autowired//支持 Optional 容器
 	private Optional<UserHolder> users;
+
+//	@Inject // Inject 和 Autowired 进行注入.
+//	private Optional<UserHolder> users;
 
 	public static void main(String[] args) {
 		// 基于ApplicationContext实现的ioc
@@ -48,10 +52,11 @@ public class AutowiredAnnotationDependencyInjectDemo {
 		AutowiredAnnotationDependencyInjectDemo bean = annotationConfigApplicationContext.getBean(AutowiredAnnotationDependencyInjectDemo.class);
 		System.out.println("==========================");
 //		bean.userHolderObjectProvider.stream().forEach(System.out::println);
-		System.out.println("延迟加载 userHolder3 : "+bean.userHolder3);
+//		System.out.println("延迟加载 userHolder3 : "+bean.userHolder3);
 //		System.out.println("延迟加载 : "+bean.users);
 		System.out.println("==========================");
 		System.out.println(bean);
+		annotationConfigApplicationContext.close();
 	}
 
 	//定义的顺序就是注入的顺序,

@@ -156,6 +156,7 @@ public class PropertyPlaceholderHelper {
 						String defaultValue = placeholder.substring(separatorIndex + this.valueSeparator.length());
 						propVal = placeholderResolver.resolvePlaceholder(actualPlaceholder);
 						if (propVal == null) {
+							//如果配置没有那么就返回默认值
 							propVal = defaultValue;
 						}
 					}
