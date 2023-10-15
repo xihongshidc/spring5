@@ -1,6 +1,5 @@
-package com.dc.springTest.dependency.source;
+package com.dc.springTest.dependencysource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;

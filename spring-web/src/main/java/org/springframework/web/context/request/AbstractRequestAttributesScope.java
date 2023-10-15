@@ -36,7 +36,7 @@ import org.springframework.lang.Nullable;
  * @since 2.0
  */
 public abstract class AbstractRequestAttributesScope implements Scope {
-
+//web 作用域实现。
 	@Override
 	public Object get(String name, ObjectFactory<?> objectFactory) {
 		RequestAttributes attributes = RequestContextHolder.currentRequestAttributes();

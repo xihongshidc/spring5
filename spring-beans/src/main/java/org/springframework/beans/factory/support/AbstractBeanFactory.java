@@ -365,11 +365,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					if (!StringUtils.hasLength(scopeName)) {
 						throw new IllegalStateException("No scope name defined for bean ´" + beanName + "'");
 					}
-					Scope scope = this.scopes.get(scopeName);
+					Scope scope = this.scopes.get(scopeName);//获取到Scope 对象
 					if (scope == null) {
 						throw new IllegalStateException("No Scope registered for scope name '" + scopeName + "'");
 					}
 					try {
+						//获取bean 。
 						Object scopedInstance = scope.get(beanName, () -> {
 							beforePrototypeCreation(beanName);
 							try {
@@ -1332,6 +1333,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			String beanName, BeanDefinition bd, @Nullable BeanDefinition containingBd)
 			throws BeanDefinitionStoreException {
 
+		/**
+		 * mergedBeanDefinitions 虽然是ConcurrentHashmap 是线程安全的,但是如果涉及到先get再判断,然后再put , 那么就需要去加锁
+		 */
 		synchronized (this.mergedBeanDefinitions) {
 			RootBeanDefinition mbd = null;
 			RootBeanDefinition previous = null;
@@ -1344,11 +1348,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			if (mbd == null || mbd.stale) {
 				previous = mbd;
 				if (bd.getParentName() == null) {
+					//说明没有父对象。
 					// Use copy of given root bean definition.
 					if (bd instanceof RootBeanDefinition) {
+						//说明这个对象就是bean根定义 ,克隆一份。
 						mbd = ((RootBeanDefinition) bd).cloneBeanDefinition();
 					}
 					else {
+						//说明这个对象还没有 合并过，创建根bean定义 对象。
 						mbd = new RootBeanDefinition(bd);
 					}
 				}
@@ -1378,6 +1385,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					}
 					// Deep copy with overridden values.
 					mbd = new RootBeanDefinition(pbd);
+					//bd 是一个子类对象， 然后在这会进行子类对象覆盖父类对象相同的属性。，
 					mbd.overrideFrom(bd);
 				}
 

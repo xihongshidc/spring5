@@ -1,8 +1,6 @@
-package com.dc.springTest.dependency.source;
+package com.dc.springTest.dependencysource;
 
 import com.dc.springTest.User;
-import com.dc.springTest.injection.AutowiredAnnotationDefined;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;

@@ -1,11 +1,7 @@
-package com.dc.springTest.dependency.source;
+package com.dc.springTest.dependencysource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Lazy;
 
 import javax.annotation.PostConstruct;
 

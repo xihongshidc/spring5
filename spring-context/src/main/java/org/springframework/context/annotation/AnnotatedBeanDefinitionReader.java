@@ -50,7 +50,7 @@ public class AnnotatedBeanDefinitionReader {
 
 	private final BeanDefinitionRegistry registry;
 
-	private BeanNameGenerator beanNameGenerator = AnnotationBeanNameGenerator.INSTANCE;
+	private BeanNameGenerator beanNameGenerator = AnnotationBeanNameGenerator.INSTANCE;//默认bean名称解析器
 
 	private ScopeMetadataResolver scopeMetadataResolver = new AnnotationScopeMetadataResolver();
 

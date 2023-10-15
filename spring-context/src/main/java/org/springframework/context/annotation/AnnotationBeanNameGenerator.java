@@ -167,7 +167,7 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
 		String beanClassName = definition.getBeanClassName();
 		Assert.state(beanClassName != null, "No bean class name set");
 		String shortClassName = ClassUtils.getShortName(beanClassName);
-		return Introspector.decapitalize(shortClassName);
+		return Introspector.decapitalize(shortClassName); //首字母小写.
 	}
 
 }

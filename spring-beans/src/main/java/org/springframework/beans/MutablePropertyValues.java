@@ -169,9 +169,11 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 	 * @return this in order to allow for adding multiple property values in a chain
 	 */
 	public MutablePropertyValues addPropertyValue(PropertyValue pv) {
+		//遍历原始数据的所有字段属性，
 		for (int i = 0; i < this.propertyValueList.size(); i++) {
 			PropertyValue currentPv = this.propertyValueList.get(i);
 			if (currentPv.getName().equals(pv.getName())) {
+				//name 相等合并属性，
 				pv = mergeIfRequired(pv, currentPv);
 				setPropertyValueAt(pv, i);
 				return this;

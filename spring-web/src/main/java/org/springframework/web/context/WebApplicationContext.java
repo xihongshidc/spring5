@@ -104,3 +104,4 @@ public interface WebApplicationContext extends ApplicationContext {
 	ServletContext getServletContext();
 
 }
+
