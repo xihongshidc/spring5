@@ -75,8 +75,10 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 									(PrivilegedExceptionAction<Constructor<?>>) clazz::getDeclaredConstructor);
 						}
 						else {
+							//获取无参构造
 							constructorToUse = clazz.getDeclaredConstructor();
 						}
+						// 保存构造方法.下次需要重新实例化的时候时候可以提前调用该方法,进行实例化.
 						bd.resolvedConstructorOrFactoryMethod = constructorToUse;
 					}
 					catch (Throwable ex) {

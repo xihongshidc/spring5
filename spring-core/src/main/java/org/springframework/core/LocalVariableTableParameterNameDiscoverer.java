@@ -89,7 +89,7 @@ public class LocalVariableTableParameterNameDiscoverer implements ParameterNameD
 	 * Inspects the target class.
 	 * <p>Exceptions will be logged, and a marker map returned to indicate the
 	 * lack of debug information.
-	 */
+	 *///检查目标类,返回方法名和方法参数,
 	private Map<Executable, String[]> inspectClass(Class<?> clazz) {
 		InputStream is = clazz.getResourceAsStream(ClassUtils.getClassFileName(clazz));
 		if (is == null) {

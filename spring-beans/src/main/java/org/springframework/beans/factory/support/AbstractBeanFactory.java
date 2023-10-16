@@ -298,7 +298,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			try {
-				//从容器中获取 beanName 相应的 GenericBeanDefinition 对象，并将其转换为 RootBeanDefinition 对象
+				//从容器中获取 beanName 相应的 GenericBeanDefinition 对象，并将其转换为 RootBeanDefinition 对象(合并后的beandefinition对象)
 				RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
 				//检查给定的合并 BeanDefinition
 				checkMergedBeanDefinition(mbd, beanName, args);
@@ -1490,13 +1490,15 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	protected Class<?> resolveBeanClass(RootBeanDefinition mbd, String beanName, Class<?>... typesToMatch)
 			throws CannotLoadBeanClassException {
 
-		try {
+		try {//这里是为了判断这个 RootBeanDefinition 是否应 加载过beanclass, 如果加载过了,那么beanclass 对应一个Class 类型,如果没加载过那么就是一个String
 			if (mbd.hasBeanClass()) {
 				return mbd.getBeanClass();
 			}
 			if (System.getSecurityManager() != null) {
+				//doPrivileged 权限机制
 				return AccessController.doPrivileged((PrivilegedExceptionAction<Class<?>>)
-						() -> doResolveBeanClass(mbd, typesToMatch), getAccessControlContext());
+						() -> doResolveBeanClass(mbd, typesToMatch) ,
+						getAccessControlContext());
 			}
 			else {
 				return doResolveBeanClass(mbd, typesToMatch);
@@ -1517,8 +1519,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	@Nullable
 	private Class<?> doResolveBeanClass(RootBeanDefinition mbd, Class<?>... typesToMatch)
 			throws ClassNotFoundException {
-
+		//获取当前beanclassLoader
 		ClassLoader beanClassLoader = getBeanClassLoader();
+		//动态class loader
 		ClassLoader dynamicLoader = beanClassLoader;
 		boolean freshResolve = false;
 

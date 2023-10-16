@@ -41,7 +41,8 @@ public class ThreadLocalScopDemo {
 		//启动应用上下文
 		annotationConfigApplicationContext.refresh();
 		//依赖查找。
-		ThreadLocalScopDemo bean = annotationConfigApplicationContext.getBean(ThreadLocalScopDemo.class);
+//		ThreadLocalScopDemo bean = annotationConfigApplicationContext.getBean(ThreadLocalScopDemo.class);
+		ThreadLocalScopDemo bean = annotationConfigApplicationContext.getBean("threadLocalScopDemo",ThreadLocalScopDemo.class);
 
 		for (int i = 0; i < 3; i++) {
 			Thread thread = new Thread(() -> {

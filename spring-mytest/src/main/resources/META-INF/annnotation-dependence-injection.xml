@@ -9,15 +9,15 @@
 
 <!--	<context:annotation-config/>-->
 <!--	<context:component-scan base-package="com.dc"/>-->
-<!--	<import resource="depedence.xml"></import>-->
+	<import resource="depedence.xml"></import>
 	<bean id= "user1" class="com.dc.springTest.SuperUser" primary="true" parent="user">
 		<property name="name" value="小葱"></property>
 		<property name="age" value="20"></property>
 	</bean>
-	<bean id="user" class="com.dc.springTest.User">
-		<property name="name" value="dc"></property>
-		<property name="age" value="12"/>
-	</bean>
+<!--	<bean id="user" class="com.dc.springTest.User">-->
+<!--		<property name="name" value="dc"></property>-->
+<!--		<property name="age" value="12"/>-->
+<!--	</bean>-->
 
 
 </beans>

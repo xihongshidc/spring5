@@ -209,6 +209,7 @@ class ConstructorResolver {
 			LinkedList<UnsatisfiedDependencyException> causes = null;
 
 			for (Constructor<?> candidate : candidates) {
+				//这里会循环遍历所有候选构造器
 				int parameterCount = candidate.getParameterCount();
 
 				if (constructorToUse != null && argsToUse != null && argsToUse.length > parameterCount) {
@@ -303,6 +304,7 @@ class ConstructorResolver {
 
 		//创建Bean 对象, 并设置到bw中
 		Assert.state(argsToUse != null, "Unresolved constructor arguments");
+		//构造器注入  bean对象
 		bw.setBeanInstance(instantiate(beanName, mbd, constructorToUse, argsToUse));
 		return bw;
 	}

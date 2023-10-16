@@ -1,5 +1,6 @@
 package com.dc.springTest.dependencysource.lifecycle;
 
+import com.dc.springTest.SuperUser;
 import com.dc.springTest.injection.AutowiredAnnotationDependencyInjectDemo;
 import org.springframework.beans.factory.support.AbstractBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
@@ -25,9 +26,10 @@ public class MergeBeanDefinitionDemo {
 		//启动应用上下文
 		annotationConfigApplicationContext.refresh();
 		//依赖查找。
-		MergeBeanDefinitionDemo bean = annotationConfigApplicationContext.getBean(MergeBeanDefinitionDemo.class);
+//		MergeBeanDefinitionDemo bean = annotationConfigApplicationContext.getBean(MergeBeanDefinitionDemo.class);
+//		SuperUser bean1 = annotationConfigApplicationContext.getBean("superUser",SuperUser.class);
 		System.out.println("==========================");
-		System.out.println(bean);
+//		System.out.println(bean);
 		annotationConfigApplicationContext.close();
 
 

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.support.PropertiesBeanDefinitionReader;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
+import org.springframework.util.ObjectUtils;
 
 /**
  * Description: 基于properties 进行配置bean定义.
@@ -29,7 +30,7 @@ public class BeanMetadataConfigurationDemo {
 		PropertiesBeanDefinitionReader propertiesBeanDefinitionReader = new PropertiesBeanDefinitionReader(defaultListableBeanFactory);
 		propertiesBeanDefinitionReader.loadBeanDefinitions(encodedResource);
 
-		User bean = defaultListableBeanFactory.getBean(User.class);
+		User bean = defaultListableBeanFactory.getBean("user",User.class);
 		System.out.println(bean);
 
 
