@@ -412,11 +412,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		Object result = existingBean;
 		for (BeanPostProcessor processor : getBeanPostProcessors()) {
-			// 执行 初始化前置处理器方法
+			// 执行 初始化前置处理器方法 ,@PostConstrut 这里会回调ApplicationContext 上下文实现的Aware回调
 			Object current = processor.postProcessBeforeInitialization(result, beanName);
 			if (current == null) {
-				return result;
+				return result;  //返回原始对象
 			}
+			//可以修改对象属性，或者记录日志，或者是一个代理对象
 			result = current;
 		}
 		return result;
@@ -1461,7 +1462,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			for (BeanPostProcessor bp : getBeanPostProcessors()) {
 				if (bp instanceof InstantiationAwareBeanPostProcessor) {
 					InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
-					//属性检查 @Autowired，@Value，@Lookup，@Inject @Resource ,属性赋值都在这个
+					//属性检查@Autowired，@Value，@Lookup，@Inject @Resource ,属性赋值都在这个
 					PropertyValues pvsToUse = ibp.postProcessProperties(pvs, bw.getWrappedInstance(), beanName);
 					if (pvsToUse == null) {
 						if (filteredPds == null) {
@@ -1858,7 +1859,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		return wrappedBean;
 	}
-
+	//可以确认的是 BeanNameAware , BeanClassloaderAware , BeanFactoryAware 他们的顺序是固定的.
 	private void invokeAwareMethods(String beanName, Object bean) {
 		if (bean instanceof Aware) {
 			if (bean instanceof BeanNameAware) {//设置beanName
@@ -1908,7 +1909,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				}
 			}
 			else {
-				((InitializingBean) bean).afterPropertiesSet();
+				((InitializingBean) bean).afterPropertiesSet();// 实现InitializingBean 接口。 对bean进行初始化，增强。
 			}
 		}
 
@@ -1917,7 +1918,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			if (StringUtils.hasLength(initMethodName) &&
 					!(isInitializingBean && "afterPropertiesSet".equals(initMethodName)) &&
 					!mbd.isExternallyManagedInitMethod(initMethodName)) {
-				invokeCustomInitMethod(beanName, bean, mbd);
+				invokeCustomInitMethod(beanName, bean, mbd);    //自定义初始化方法，继续增强。
 			}
 		}
 	}

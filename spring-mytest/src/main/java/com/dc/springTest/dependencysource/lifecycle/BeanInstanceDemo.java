@@ -3,6 +3,9 @@ package com.dc.springTest.dependencysource.lifecycle;
 import com.dc.springTest.SuperUser;
 import com.dc.springTest.User;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.MutablePropertyValues;
+import org.springframework.beans.PropertyValue;
+import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
@@ -43,7 +46,9 @@ public class BeanInstanceDemo {
 		for (String s : beansOfType.keySet()) {
 			System.out.println("beanName  : " + s + " ===" +  beansOfType.get(s));
 		}
-//		User bean = defaultListableBeanFactory.getBean("user",User.class);
+		User bean = defaultListableBeanFactory.getBean("user",User.class);
+
+		defaultListableBeanFactory.destroySingletons();
 //		User bean1 = defaultListableBeanFactory.getBean("user1",SuperUser.class);
 //		System.out.println(bean1);
 //		System.out.println(bean);
@@ -68,9 +73,28 @@ public class BeanInstanceDemo {
 				sp.setAge("2");
 				sp.setName("dcc");
 
-				return false;
+				return true;
 			}
 			return true;
+		}
+
+		@Override
+		public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) throws BeansException {
+			if (!ObjectUtils.nullSafeEquals(beanName, "user1")) {
+				return null;
+			}
+			if (pvs instanceof MutablePropertyValues) {
+				MutablePropertyValues pvs1 = (MutablePropertyValues) pvs;
+				if (pvs1.contains("age")) {
+					PropertyValue age = pvs1.getPropertyValue("age");
+					age.setConvertedValue("30");
+				}
+				if (pvs1.contains("name")) {
+					PropertyValue age = pvs1.getPropertyValue("name");
+					age.setConvertedValue("dac");
+				}
+			}
+			return pvs;
 		}
 	}
 }

@@ -8,9 +8,12 @@
              http://www.springframework.org/schema/context/spring-context.xsd">
 
 <!--	<context:annotation-config/>-->
+<!--	自动注入 bean    -->
+	<bean class="com.dc.springTest.dependencysource.lifecycle.MyBeanInstancePostprocessor"></bean>
 <!--	<context:component-scan base-package="com.dc"/>-->
 	<import resource="depedence.xml"></import>
-	<bean id= "user1" class="com.dc.springTest.SuperUser" primary="true" parent="user">
+<!--	自定义初始化方法。-->
+	<bean id= "user1" class="com.dc.springTest.SuperUser" primary="true" parent="user" init-method="initdemo">
 		<property name="name" value="小葱"></property>
 		<property name="age" value="20"></property>
 	</bean>

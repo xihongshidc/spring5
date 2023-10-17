@@ -4,8 +4,10 @@ import com.dc.springTest.annotation.Super;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.StringUtils;
@@ -20,7 +22,8 @@ import java.util.HashSet;
  * Date: 2023/9/12 16:36
  */
 @Super
-public class User implements BeanFactoryAware , ApplicationContextAware, InitializingBean , DisposableBean {// 基于Aware 接口实现回调注入
+public class User implements BeanFactoryAware , ApplicationContextAware, InitializingBean ,
+		DisposableBean, SmartInitializingSingleton, BeanNameAware {// 基于Aware 接口实现回调注入
 	private String name;
 	private String age;
 	private String beanName;
@@ -69,6 +72,8 @@ public class User implements BeanFactoryAware , ApplicationContextAware, Initial
 		return "User{" +
 				"name='" + name + '\'' +
 				", age='" + age + '\'' +
+				", beanName='" + beanName + '\'' +
+				", applicationContext=" + applicationContext +
 				'}';
 	}
 
@@ -83,13 +88,14 @@ public class User implements BeanFactoryAware , ApplicationContextAware, Initial
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
 		System.out.println("调用 beanFactory :" + beanFactory);
-		this.beanFactory=beanFactory;
+		this.beanFactory = beanFactory;
 	}
 
 	public String getBeanName() {
 		return beanName;
 	}
 
+	@Override
 	public void setBeanName(String beanName) {
 		this.beanName = beanName;
 	}
@@ -113,7 +119,7 @@ public class User implements BeanFactoryAware , ApplicationContextAware, Initial
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		System.out.println("调用 applicationContext :" + applicationContext);
-		this.applicationContext=applicationContext;
+		this.applicationContext = applicationContext;
 
 	}
 
@@ -125,18 +131,18 @@ public class User implements BeanFactoryAware , ApplicationContextAware, Initial
 	}
 
 	public void initdemo(){
-		System.out.println("initmethod  :::  初始化");
+		System.out.println("initmethod  :::  初始化 =" + beanName);
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		System.out.println("name + age :  "+this.name + this.age);
-		System.out.println("InitializingBean ::: 初始化");
+		System.out.println("name + age :  " + this.name +" -"+ this.age);
+		System.out.println("afterPropertiesSet ::: 初始化");
 	}
 
 	@PreDestroy
 	public void preDestory(){
-		System.out.println("@PreDestroy :::  销毁中");
+		System.out.println("@PreDestroy :::  销毁中"+ beanName);
 	}
 
 	public void predes(){
@@ -145,12 +151,18 @@ public class User implements BeanFactoryAware , ApplicationContextAware, Initial
 
 	@Override
 	public void destroy() throws Exception {
-		System.out.println("DisposableBean  :::  销毁中");
+		System.out.println("DisposableBean  :::  销毁中"+ beanName);
 	}
 
 	@Override
 	public void finalize() throws Throwable {
 		super.finalize();
 		System.out.println( " Gc " );
+	}
+
+	//这个方法需要显示的被调用，通常是ApplicationContext 会在容器初始化之后显示调用。。
+	@Override
+	public void afterSingletonsInstantiated() {
+		System.out.println("afterSingletonsInstantiated ==== " + beanName);
 	}
 }
