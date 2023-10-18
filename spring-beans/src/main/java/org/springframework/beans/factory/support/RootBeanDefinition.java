@@ -53,7 +53,7 @@ import org.springframework.util.Assert;
  */
 @SuppressWarnings("serial")
 public class RootBeanDefinition extends AbstractBeanDefinition {
-
+//顶级的bean 没有父定义 , 或者已经合并完父定义的BeanDefination
 	@Nullable
 	private BeanDefinitionHolder decoratedDefinition;
 
@@ -263,7 +263,7 @@ public class RootBeanDefinition extends AbstractBeanDefinition {
 	}
 
 	@Override
-	public void setParentName(@Nullable String parentName) {
+	public void setParentName(@Nullable String parentName) {//不允许有 父定义了.
 		if (parentName != null) {
 			throw new IllegalArgumentException("Root bean cannot be changed into a child bean with parent reference");
 		}

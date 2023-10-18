@@ -619,6 +619,7 @@ public abstract class AbstractNestablePropertyAccessor extends AbstractPropertyA
 		String actualName = tokens.actualName;
 		PropertyHandler ph = getLocalPropertyHandler(actualName);
 		if (ph == null || !ph.isReadable()) {
+			//如果beanproperty 没有对上那么就抛异常...
 			throw new NotReadablePropertyException(getRootClass(), this.nestedPath + propertyName);
 		}
 		try {

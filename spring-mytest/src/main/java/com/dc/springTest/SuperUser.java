@@ -16,8 +16,6 @@ public class SuperUser extends User {
 	//自动注入的话是注入DefaultListableBeanFactory
 	private BeanFactory beanFactory;
 
-	private String beanName;
-
 	private ObjectFactory<ApplicationContext> contextObjectFactory;
 
 	public ObjectFactory<ApplicationContext> getContextObjectFactory() {
@@ -55,13 +53,4 @@ public class SuperUser extends User {
 		System.out.println("preDestory1 :::  销毁中"+(getBeanName()));
 	}
 
-	@Override
-	public void setBeanName(String beanName) {
-		this.beanName=beanName;
-	}
-
-	@Override
-	public String getBeanName() {
-		return this.beanName;
-	}
 }

@@ -24,7 +24,7 @@ public class BeanMetadataConfigurationDemo {
 
 		//可以通过
 		Resource resource = new ClassPathResource(localtion);
-		EncodedResource encodedResource= new EncodedResource(resource,"utf-8");
+		EncodedResource encodedResource= new EncodedResource(resource);
 
 		//Properties 配置bean
 		PropertiesBeanDefinitionReader propertiesBeanDefinitionReader = new PropertiesBeanDefinitionReader(defaultListableBeanFactory);

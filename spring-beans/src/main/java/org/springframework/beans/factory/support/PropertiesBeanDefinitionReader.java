@@ -377,10 +377,12 @@ public class PropertiesBeanDefinitionReader extends AbstractBeanDefinitionReader
 					sepIdx = nameAndProperty.lastIndexOf(SEPARATOR);
 				}
 				if (sepIdx != -1) {
+					// . 分隔符前面的名字
 					String beanName = nameAndProperty.substring(0, sepIdx);
 					if (logger.isTraceEnabled()) {
 						logger.trace("Found bean name '" + beanName + "'");
 					}
+					//如果beanName 不存在
 					if (!getRegistry().containsBeanDefinition(beanName)) {
 						// If we haven't already registered it...
 						registerBeanDefinition(beanName, map, prefix + beanName, resourceDescription);

@@ -136,7 +136,7 @@ public class User implements BeanFactoryAware , ApplicationContextAware, Initial
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		System.out.println("name + age :  " + this.name +" -"+ this.age);
+		System.out.println("name + age :  " + this.beanName +" -"+ this.age);
 		System.out.println("afterPropertiesSet ::: 初始化");
 	}
 

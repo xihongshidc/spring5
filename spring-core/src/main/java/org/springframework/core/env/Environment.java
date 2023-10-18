@@ -92,7 +92,7 @@ public interface Environment extends PropertyResolver {
 	 * @see ConfigurableEnvironment#setDefaultProfiles
 	 * @see AbstractEnvironment#DEFAULT_PROFILES_PROPERTY_NAME
 	 */
-	String[] getDefaultProfiles();
+	String[] getDefaultProfiles(); // 环境条件配置, 获取默认环境配置,
 
 	/**
 	 * Return whether one or more of the given profiles is active or, in the case of no
