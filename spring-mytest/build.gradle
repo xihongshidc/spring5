@@ -12,6 +12,7 @@ repositories {
 }
 
 dependencies {
+    compile("org.yaml:snakeyaml")
     compile(project(":spring-aop"))
     compile(project(":spring-beans"))
     compile(project(":spring-context"))

@@ -1829,7 +1829,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			if (mbd != null) {
 				mbd.isFactoryBean = true;
 			}
-			return beanInstance;
+			return beanInstance;    //工厂bean直接返回
 		}
 
 		// Now we have the bean instance, which may be a normal bean or a FactoryBean.

@@ -52,7 +52,7 @@ import org.springframework.util.StringUtils;
  * @author Dave Syer
  * @author Juergen Hoeller
  * @author Sam Brannen
- * @since 4.1
+ * @since 4.1   springboot 1.0 是基于spring4.0 开发的
  */
 public abstract class YamlProcessor {
 

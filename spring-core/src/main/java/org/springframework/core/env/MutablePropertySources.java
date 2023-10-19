@@ -41,6 +41,7 @@ import org.springframework.lang.Nullable;
  */
 public class MutablePropertySources implements PropertySources {
 
+	//propertySource  资源配置是先来先服务的.
 	private final List<PropertySource<?>> propertySourceList = new CopyOnWriteArrayList<>();
 
 

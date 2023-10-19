@@ -7,7 +7,7 @@
 
 	<import resource="depedence.xml"></import>
 	<bean id="userHolder" class="com.dc.springTest.injection.UserHolder" >
-			<property name="user" ref="user"/>
+		<property name="user" ref="user"/>
 		<property name="id" value="22"></property>
  	</bean>
 
