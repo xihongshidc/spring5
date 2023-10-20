@@ -11,10 +11,11 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.util.ObjectUtils;
+import org.springframework.core.io.support.EncodedResource;
 
 /**
  * Description: xml 是通过 XmlBeanDefinitionReader 读取配置信息注册到ioc 容器的.
- * {@link org.springframework.beans.factory.xml.XmlBeanDefinitionReader#loadBeanDefinitions(org.springframework.core.io.support.EncodedResource)}
+ * {@link XmlBeanDefinitionReader#loadBeanDefinitions(EncodedResource)}
  * Author: duancong
  * Date: 2023/10/18 12:22
  */

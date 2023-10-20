@@ -56,6 +56,7 @@ public class FileSystemResourceLoader extends DefaultResourceLoader {
 
 
 	/**
+	 * 文件系统资源上下文
 	 * FileSystemResource that explicitly expresses a context-relative path
 	 * through implementing the ContextResource interface.
 	 */

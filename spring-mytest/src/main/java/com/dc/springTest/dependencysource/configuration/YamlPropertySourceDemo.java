@@ -20,23 +20,24 @@ import java.util.Map;
  * Author: duancong
  * Date: 2023/10/19 17:22
  */
-@ImportResource("META-INF/yaml-property-source.xml")
+//@ImportResource("META-INF/yaml-property-source.xml")
 @PropertySource(name = "dddd",value = "META-INF/user.yaml", factory = YamlPropertySourceFactory.class)//扩展yaml 格式读取为Properties文件
 public class YamlPropertySourceDemo {
 	@Value("${user.age}")
 	private String superName;
-
-	@Value("${resource}")
-	private Resource resource; //类型转换, 字符串转为Resource
-
-//	@Bean
-//	public User user(@Value("${user.name}")String name, @Value("${user:age}")String age){
-//		User user = new User();
-//		user.setAge(age);
-//		user.setName(name);
-//		return user;
 //
-//	}
+//	@Value("${resource}")
+//	private Resource resource; //类型转换, 字符串转为Resource
+
+	//@Bean 触发bean的注册, 定义
+	@Bean(value = "user2")
+	public User user(@Value("${user.name}")String name, @Value("${user.age}")String age){
+		User user = new User();
+		user.setAge(age);
+		user.setName(name);
+		return user;
+
+	}
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext();
 		//注册当前类. 为配置类
@@ -53,6 +54,8 @@ public class YamlPropertySourceDemo {
 //		System.out.println(annotationConfigApplicationContext.getEnvironment().getPropertySources() + "******");
 
 		YamlPropertySourceDemo bean = annotationConfigApplicationContext.getBean(YamlPropertySourceDemo.class);
+		User user2 = (User) annotationConfigApplicationContext.getBean("user2");
+		System.out.println(user2);
 		System.out.println(bean.superName);
 		annotationConfigApplicationContext.close();
 	}

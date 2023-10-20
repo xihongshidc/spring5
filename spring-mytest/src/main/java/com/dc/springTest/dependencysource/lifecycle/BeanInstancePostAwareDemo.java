@@ -16,14 +16,15 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.ObjectUtils;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 
 import java.util.Map;
 
 /**
  * Description:  属性注入后，会执行 aware 接口的回调方法， 通过接口实现注入特定的属性，BeanFactoryAware ，BeanClassLoaderAware， BeanNameAware，（基础的BeanFactory 提供的方法。）
- * {@link AbstractAutowireCapableBeanFactory#initializeBean(java.lang.String, java.lang.Object, org.springframework.beans.factory.support.RootBeanDefinition)}
+ * {@link AbstractAutowireCapableBeanFactory#initializeBean(String, Object, RootBeanDefinition)}
  * 高级容器  ApplicationContext 扩展了一个 ApplicationContextAwareProcessor 内置的类， 在初始化前实现aware 接口注入，
- * {@link BeanPostProcessor#postProcessBeforeInitialization(java.lang.Object, java.lang.String)}
+ * {@link BeanPostProcessor#postProcessBeforeInitialization(Object, String)}
  * Author: duancong
  * Date: 2023/10/16 14:39
  */

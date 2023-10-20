@@ -39,7 +39,7 @@ import org.springframework.core.io.ResourceLoader;
  * Input patterns have to match the strategy implementation. This interface just
  * specifies the conversion method rather than a specific pattern format.
  *
- * <p>This interface also suggests a new resource prefix "classpath*:" for all
+ * <p>This interface also suggests a new resource prefix "classpath*:" for all (带星号的匹配所有classpath 下的资源文件 ,不带星号只匹配当前classpath下的资源文件)
  * matching resources from the class path. Note that the resource location is
  * expected to be a path without placeholders in this case (e.g. "/beans.xml");
  * JAR files or classes directories can contain multiple files of the same name.

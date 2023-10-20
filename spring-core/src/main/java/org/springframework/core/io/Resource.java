@@ -40,7 +40,7 @@ import org.springframework.lang.Nullable;
  * @see #getURL()
  * @see #getURI()
  * @see #getFile()
- * @see WritableResource
+ * @see WritableResource //可写资源
  * @see ContextResource
  * @see UrlResource
  * @see FileUrlResource

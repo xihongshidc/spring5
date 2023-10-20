@@ -38,9 +38,9 @@ public class AnnotationPropertySourceDemo {
 	private Resource resource; //类型转换, 字符串转为Resource
 
 	@Bean
-	public User user(){
+	public User user(@Value("${user.age}")String age, @Value("${user.name}")String superName){
 		User user = new User();
-		user.setAge("1");
+		user.setAge(age);
 		user.setName(superName);
 		return user;
 
@@ -55,6 +55,7 @@ public class AnnotationPropertySourceDemo {
 		//自定义添加PropertySource
 		java.util.Map map =new HashMap();
 		map.put("user.name","ddddd");
+		map.put("user.age","9654");
 		org.springframework.core.env.PropertySource propertySource=new MapPropertySource("dc",map);
 		propertySources.addFirst(propertySource);
 
