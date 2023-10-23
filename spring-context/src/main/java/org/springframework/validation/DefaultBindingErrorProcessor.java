@@ -61,6 +61,7 @@ public class DefaultBindingErrorProcessor implements BindingErrorProcessor {
 		Object[] arguments = getArgumentsForBindError(bindingResult.getObjectName(), fixedField);
 		FieldError error = new FieldError(bindingResult.getObjectName(), fixedField, "", true,
 				codes, arguments, "Field '" + fixedField + "' is required");
+		//记录bindingResult
 		bindingResult.addError(error);
 	}
 

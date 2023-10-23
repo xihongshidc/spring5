@@ -127,10 +127,10 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 	private final String objectName;
 
 	@Nullable
-	private AbstractPropertyBindingResult bindingResult;
+	private AbstractPropertyBindingResult bindingResult; //数据绑定.
 
 	@Nullable
-	private SimpleTypeConverter typeConverter;
+	private SimpleTypeConverter typeConverter;//类型转换
 
 	private boolean ignoreUnknownFields = true;
 
@@ -781,8 +781,8 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 	 * @see org.springframework.util.PatternMatchUtils#simpleMatch(String, String)
 	 */
 	protected boolean isAllowed(String field) {
-		String[] allowed = getAllowedFields();
-		String[] disallowed = getDisallowedFields();
+		String[] allowed = getAllowedFields();//白名单
+		String[] disallowed = getDisallowedFields();//黑名单
 		return ((ObjectUtils.isEmpty(allowed) || PatternMatchUtils.simpleMatch(allowed, field)) &&
 				(ObjectUtils.isEmpty(disallowed) || !PatternMatchUtils.simpleMatch(disallowed, field)));
 	}

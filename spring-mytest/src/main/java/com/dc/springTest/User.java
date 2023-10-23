@@ -28,6 +28,27 @@ public class User implements BeanFactoryAware , ApplicationContextAware, Initial
 	private String age;
 	private String beanName;
 
+	private Company company;
+
+	public Company getCompany() {
+		return company;
+	}
+
+	@Override
+	public String toString() {
+		return "User{" +
+				"name='" + name + '\'' +
+				", age='" + age + '\'' +
+				", beanName='" + beanName + '\'' +
+				", company=" + company +
+				", applicationContext=" + applicationContext +
+				'}';
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
 	private BeanFactory beanFactory;
 
 	private ClassLoader classLoader;
@@ -65,16 +86,6 @@ public class User implements BeanFactoryAware , ApplicationContextAware, Initial
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	@Override
-	public String toString() {
-		return "User{" +
-				"name='" + name + '\'' +
-				", age='" + age + '\'' +
-				", beanName='" + beanName + '\'' +
-				", applicationContext=" + applicationContext +
-				'}';
 	}
 
 	public String getAge() {
@@ -164,5 +175,24 @@ public class User implements BeanFactoryAware , ApplicationContextAware, Initial
 	@Override
 	public void afterSingletonsInstantiated() {
 		System.out.println("afterSingletonsInstantiated ==== " + beanName);
+	}
+
+	public static class Company{
+		private String company;
+
+		public String getCompany() {
+			return company;
+		}
+
+		public void setCompany(String company) {
+			this.company = company;
+		}
+
+		@Override
+		public String toString() {
+			return "Company{" +
+					"company='" + company + '\'' +
+					'}';
+		}
 	}
 }

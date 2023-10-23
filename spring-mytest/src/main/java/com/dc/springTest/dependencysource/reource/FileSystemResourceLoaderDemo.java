@@ -26,10 +26,8 @@ public class FileSystemResourceLoaderDemo {
 		ContextResource resource = (ContextResource) fileSystemResourceLoader.getResource(x);
 		System.out.println(resource.getPathWithinContext());
 		System.out.println(resource.getFile().getPath());
-//		FileSystemResource fileSystemResource = new FileSystemResource(x);
+//		FileSystemResource fileSystem= new FileSystemResource(x);
 		EncodedResource encodedResource = new EncodedResource(resource, "UTF-16");
-		try(InputStream inputStream = encodedResource.getInputStream()){
-			System.out.println(StreamUtils.copyToString(inputStream, Charset.defaultCharset()));
-		};
+		System.out.println(ResourceUtils.toString(encodedResource.getResource()));
 	}
 }
