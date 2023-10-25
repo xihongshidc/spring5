@@ -148,6 +148,7 @@ public class CustomEditorConfigurer implements BeanFactoryPostProcessor, Ordered
 			}
 		}
 		if (this.customEditors != null) {
+			//注册 自定义类型转换
 			this.customEditors.forEach(beanFactory::registerCustomEditor);
 		}
 	}

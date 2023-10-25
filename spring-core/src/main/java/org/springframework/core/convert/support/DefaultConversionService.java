@@ -64,7 +64,7 @@ public class DefaultConversionService extends GenericConversionService {
 	 * @return the shared {@code ConversionService} instance (never {@code null})
 	 * @since 4.3.5
 	 */
-	public static ConversionService getSharedInstance() {
+	public static ConversionService getSharedInstance() {//单例实现.
 		DefaultConversionService cs = sharedInstance;
 		if (cs == null) {
 			synchronized (DefaultConversionService.class) {
@@ -100,7 +100,7 @@ public class DefaultConversionService extends GenericConversionService {
 	}
 
 	/**
-	 * Add common collection converters.
+	 * Add common collection converters.  //集合转换器
 	 * @param converterRegistry the registry of converters to add to
 	 * (must also be castable to ConversionService, e.g. being a {@link ConfigurableConversionService})
 	 * @throws ClassCastException if the given ConverterRegistry could not be cast to a ConversionService
@@ -131,6 +131,7 @@ public class DefaultConversionService extends GenericConversionService {
 		converterRegistry.addConverter(new StreamConverter(conversionService));
 	}
 
+	//单一类型转换器
 	private static void addScalarConverters(ConverterRegistry converterRegistry) {
 		converterRegistry.addConverterFactory(new NumberToNumberConverterFactory());
 

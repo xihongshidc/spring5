@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.HashSet;
+import java.util.Properties;
 
 /**
  * Description:
@@ -34,6 +35,14 @@ public class User implements BeanFactoryAware , ApplicationContextAware, Initial
 		return company;
 	}
 
+	private Properties properties;
+
+	private String astext;
+
+	public String getAstext() {
+		return astext;
+	}
+
 	@Override
 	public String toString() {
 		return "User{" +
@@ -41,8 +50,21 @@ public class User implements BeanFactoryAware , ApplicationContextAware, Initial
 				", age='" + age + '\'' +
 				", beanName='" + beanName + '\'' +
 				", company=" + company +
-				", applicationContext=" + applicationContext +
+				", properties=" + properties +
+				", astext='" + astext + '\'' +
 				'}';
+	}
+
+	public void setAstext(String astext) {
+		this.astext = astext;
+	}
+
+	public Properties getProperties() {
+		return properties;
+	}
+
+	public void setProperties(Properties properties) {
+		this.properties = properties;
 	}
 
 	public void setCompany(Company company) {

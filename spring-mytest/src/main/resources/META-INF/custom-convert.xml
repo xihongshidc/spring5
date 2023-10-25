@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+          http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+	   xmlns:aop="http://www.springframework.org/schema/aop">
+
+	<bean  id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters" >
+			<bean class="com.dc.springTest.conversion.CustomPropertiesToStringConverter"></bean>
+		</property>
+	</bean>
+	<util:properties id="properties">
+		<prop key="id">222</prop>
+		<prop key="lz">dd</prop>
+	</util:properties>
+
+	<bean id="user" class="com.dc.springTest.User">
+		<property name="name" value="dc"></property>
+		<property name="age" value="12"/>
+		<property name="properties">
+			<value>
+				age = 12
+				name = dc
+			</value>
+		</property>
+		<property name="astext" >
+			<util:properties id="properties">
+				<prop key="id">222</prop>
+				<prop key="lz">dd</prop>
+			</util:properties>
+		</property>
+<!--		<property name="company" value="sd"></property>-->
+	</bean>
+
+
+</beans>

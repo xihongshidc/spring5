@@ -32,7 +32,9 @@ import org.springframework.lang.Nullable;
  */
 @FunctionalInterface
 public interface Converter<S, T> {
+	//缺少类型判断， ConditionalConverter
 
+	//仅能转换单一的 类型转换 Source Type ，和Target Type ，对于符合类型则没法判断，比如集合类型无法判断单一元素。
 	/**
 	 * Convert the source object of type {@code S} to target type {@code T}.
 	 * @param source the source object to convert, which must be an instance of {@code S} (never {@code null})

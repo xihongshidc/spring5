@@ -27,8 +27,8 @@ import org.springframework.core.convert.TypeDescriptor;
  * @author Keith Donald
  * @author Phillip Webb
  * @since 3.0
- * @see GenericConverter
- * @see ConditionalConverter
+ * @see GenericConverter //类型
+ * @see ConditionalConverter// 条件判断
  */
 public interface ConditionalGenericConverter extends GenericConverter, ConditionalConverter {
 

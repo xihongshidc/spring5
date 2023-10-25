@@ -173,6 +173,7 @@ public abstract class ObjectUtils {
 				return null;
 			}
 			Object result = optional.get();
+			// 如果result 还是Optional  则抛异常
 			Assert.isTrue(!(result instanceof Optional), "Multi-level Optional usage not supported");
 			return result;
 		}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="companyReigtrar" class="com.dc.springTest.conversion.CustomCompanyReigtrar"></bean>
+
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="propertyEditorRegistrars">
+			<list>
+				<ref bean="companyReigtrar"></ref>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="user" class="com.dc.springTest.User">
+		<property name="name" value="dc"></property>
+		<property name="age" value="12"/>
+		<property name="properties">
+			<value>
+				age = 12
+				name = dc
+			</value>
+		</property>
+		<property name="company" value="sd"></property>
+	</bean>
+
+
+
+</beans>
