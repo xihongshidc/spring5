@@ -100,6 +100,8 @@ public class User implements BeanFactoryAware , ApplicationContextAware, Initial
 		es.add("moed");
 		es.add("emode");
 		System.out.println(StringUtils.collectionToDelimitedString(es, ", "));
+		Super annotation = SuperUser.class.getAnnotation(Super.class); //Super 注解会被继承... 那么子类就能获取到该注解了.
+		System.out.println(annotation);
 	}
 
 	public String getName() {

@@ -35,7 +35,7 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Inherited
+@Inherited //表示 该注解 会被子类所继承...
 @Documented
 public @interface Qualifier {
 
