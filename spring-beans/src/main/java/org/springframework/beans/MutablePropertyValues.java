@@ -16,6 +16,9 @@
 
 package org.springframework.beans;
 
+import org.springframework.lang.Nullable;
+import org.springframework.util.StringUtils;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,9 +31,6 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Stream;
 
-import org.springframework.lang.Nullable;
-import org.springframework.util.StringUtils;
-
 /**
  * The default implementation of the {@link PropertyValues} interface.
  * Allows simple manipulation of properties, and provides constructors
@@ -42,7 +42,7 @@ import org.springframework.util.StringUtils;
  * @since 13 May 2001
  */
 @SuppressWarnings("serial")
-public class MutablePropertyValues implements PropertyValues, Serializable {
+public class MutablePropertyValues implements PropertyValues, Serializable {//bean 初始化的时候用到的.
 
 	private final List<PropertyValue> propertyValueList;
 

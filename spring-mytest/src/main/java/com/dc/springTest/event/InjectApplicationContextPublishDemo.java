@@ -16,6 +16,9 @@ import javax.annotation.PostConstruct;
  * Description: 注入ApplicationEventPublisher
  * Author: duancong
  * Date: 2023/10/27 12:15
+ *
+ * BeanPostProcessor  实现该会接口会提前实例化bean 然后会执行一些回调方法，， 所以需要处理这些回调，避免造成问题
+ *
  */
 public class InjectApplicationContextPublishDemo implements ApplicationEventPublisherAware, ApplicationContextAware, BeanPostProcessor {
 
@@ -29,7 +32,7 @@ public class InjectApplicationContextPublishDemo implements ApplicationEventPubl
 
 		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext();
 		annotationConfigApplicationContext.register(InjectApplicationContextPublishDemo.class);
-		annotationConfigApplicationContext.register(ApplicationContextListenerDemo.MyListener.class);
+		annotationConfigApplicationContext.register(ApplicationContextListenerDemo.MyListener.class);//这里相当于在register 方法里面进行注册监听器。。
 
 		annotationConfigApplicationContext.refresh();
 		InjectApplicationContextPublishDemo bean = annotationConfigApplicationContext.getBean(InjectApplicationContextPublishDemo.class);
@@ -67,6 +70,12 @@ public class InjectApplicationContextPublishDemo implements ApplicationEventPubl
 		applicationContext.publishEvent(new ApplicationEvent(" ApplicationContext 发布 注入ApplicationEventPublisher ") {
 		});
 	}
+
+	//如果通过注解 EventListener ，会在 beanFactory.preInstantiateSingletons(); 方法进行扫描所有bean 对象然后获取Eventlistener 获取方法然后注册到listener
+//	@EventListener
+//	public void onapplication(ApplicationEvent applicationEvent){
+//		System.out.println(applicationEvent);
+//	}
 
 
 }

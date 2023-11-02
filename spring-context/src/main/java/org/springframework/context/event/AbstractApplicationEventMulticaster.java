@@ -195,7 +195,7 @@ public abstract class AbstractApplicationEventMulticaster
 				retriever = new ListenerRetriever(true);
 				Collection<ApplicationListener<?>> listeners =
 						retrieveApplicationListeners(eventType, sourceType, retriever);
-				//第一次调用的时候会 将Listener  添加到 缓存,
+				//第一次调用的时候会 对应类型的事件所有Listener  添加到 缓存,
 				this.retrieverCache.put(cacheKey, retriever);
 				return listeners;
 			}
@@ -415,6 +415,7 @@ public abstract class AbstractApplicationEventMulticaster
 	 * Helper class that encapsulates a specific set of target listeners,
 	 * allowing for efficient retrieval of pre-filtered listeners.
 	 * <p>An instance of this helper gets cached per event type and source type.
+	 * 目标监听器的集合封装、、
 	 */
 	private class ListenerRetriever {
 

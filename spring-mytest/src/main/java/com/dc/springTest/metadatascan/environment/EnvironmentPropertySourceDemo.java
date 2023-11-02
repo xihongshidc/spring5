@@ -1,33 +1,26 @@
-package com.dc.springTest.dependencysource.configuration;
+package com.dc.springTest.metadatascan.environment;
 
 import com.dc.springTest.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.io.Resource;
 
-import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Description:
  * Author: duancong
- * Date: 2023/10/19 10:25
+ * Date: 2023/10/31 15:36
  */
-@PropertySource("META-INF/superuser.properties")
-@PropertySource("META-INF/user.properties")
-//将外部化配置加载进Environment 可以通过Inject或者@Value注解进行属性注入.
-public class AnnotationPropertySourceDemo {
-	@Inject
-	private Environment environment;
-
+@PropertySource(name = "zhangsan",value = "META-INF/superuser.properties")
+public class EnvironmentPropertySourceDemo {
 	@Value("${superUser.name}")
-	private String superName;
+	private String superName; //Apollo 支持动态的配置.
 
 	@Value("${resource}")
 	private Resource resource; //类型转换, 字符串转为Resource
@@ -44,7 +37,7 @@ public class AnnotationPropertySourceDemo {
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext();
 		//注册当前类. 为配置类
-		annotationConfigApplicationContext.register(AnnotationPropertySourceDemo.class);
+		annotationConfigApplicationContext.register(EnvironmentPropertySourceDemo.class);
 		MutablePropertySources propertySources = annotationConfigApplicationContext.getEnvironment().getPropertySources();
 		//自定义添加PropertySource
 		java.util.Map map =new HashMap();
@@ -58,11 +51,14 @@ public class AnnotationPropertySourceDemo {
 		for (Map.Entry<String, User> stringUserEntry : beansOfType.entrySet()) {
 			System.out.printf(" beanName : %s ,  bean : %s \n",stringUserEntry.getKey(),stringUserEntry.getValue());
 		}
-		AnnotationPropertySourceDemo bean = annotationConfigApplicationContext.getBean(AnnotationPropertySourceDemo.class);
-		System.out.println(annotationConfigApplicationContext.getEnvironment().getPropertySources()+"******");
-		System.out.println(bean.environment + "******");
-		String property = bean.environment.getProperty("user.name");
-		System.out.println(property);
+		map.put("user.name","110dd"); //这里是在初始化之后重新修改输入的属性.
+		EnvironmentPropertySourceDemo bean = annotationConfigApplicationContext.getBean(EnvironmentPropertySourceDemo.class);
+		MutablePropertySources propertySources1 = annotationConfigApplicationContext.getEnvironment().getPropertySources();
+		for (org.springframework.core.env.PropertySource<?> source : propertySources1) {
+			//PropertySource 在environment中是有顺序的.
+			System.out.printf(" name %s  ****** user.name %s \n", source.getName(),source.getProperty("user.name"));
+		}
+
 		System.out.println(bean.superName+"******");
 		System.out.println(bean.resource+"*****");
 		System.out.println("****"+ propertySources);

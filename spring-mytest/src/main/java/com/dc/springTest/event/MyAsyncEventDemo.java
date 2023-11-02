@@ -1,6 +1,5 @@
 package com.dc.springTest.event;
 
-import org.springframework.cglib.core.DebuggingClassWriter;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -21,9 +20,8 @@ import java.util.concurrent.Executors;
 @EnableAsync
 public class MyAsyncEventDemo {
 	public static void main(String[] args) {
-		System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "F:\\class");  //--该设置用于输出cglib动态代理产生的类
-		System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");  // --该设置用于输出jdk动态代理产生的类
-
+//		System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "F:\\class");  //--该设置用于输出cglib动态代理产生的类
+//		System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");  // --该设置用于输出jdk动态代理产生的类
 
 		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext();
 		annotationConfigApplicationContext.register(MyAsyncEventDemo.class);
