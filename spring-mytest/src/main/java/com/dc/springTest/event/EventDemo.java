@@ -3,6 +3,7 @@ package com.dc.springTest.event;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.event.ContextStartedEvent;
 import org.springframework.context.event.EventListener;
 
 /**
@@ -27,6 +28,7 @@ public class EventDemo {
 		});
 
 		annotationConfigApplicationContext.refresh();
+		annotationConfigApplicationContext.publishEvent(new ContextStartedEvent(annotationConfigApplicationContext));
 
 		annotationConfigApplicationContext.publishEvent(new MyEventObject("hello world"));
 		annotationConfigApplicationContext.publishEvent(new ApplicationEvent("today is friday") {

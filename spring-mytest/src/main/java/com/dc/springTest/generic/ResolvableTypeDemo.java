@@ -3,7 +3,7 @@ package com.dc.springTest.generic;
 import org.springframework.core.ResolvableType;
 
 /**
- * Description: ResolvableType
+ * Description: ResolvableType  泛型 解析
  *  替代 GenericCollectionTypeResolve  和  GenericTypeResolver
  *  工厂方法：for* 方法
  *  转换方法：as* 方法
@@ -23,9 +23,9 @@ public class ResolvableTypeDemo {
 
 		System.out.println(resolvableType.getSuperType().getSuperType()); //java.util.AbstractList
 
-		System.out.println(resolvableType.asCollection().resolve()); // 获取原生类型
+		System.out.println(resolvableType.asCollection().resolve()); // 获取原生类型  interface java.util.Collection
 
-		System.out.println(resolvableType.asCollection().resolveGeneric(0)); //获取泛型参数类型
+		System.out.println(resolvableType.asCollection().resolveGeneric(0)); //获取泛型参数类型 class java.lang.String
 
 		System.out.println(resolvableType.resolveGeneric());
 

@@ -11,7 +11,7 @@
 <!--		<property name="age" value="19"></property>-->
 <!--	</bean>-->
 <!--也是一个bytype-->
-	<bean id="userHolder" class="com.dc.springTest.injection.UserHolder" autowire="constructor"></bean>
+	<bean id="userHolder" class="com.dc.springTest.injection.UserHolder" autowire="byName"></bean>
 
 
 </beans>

@@ -796,6 +796,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void initLifecycleProcessor() {
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
+		//注册 生命周期处理器。可以自定义。
 		if (beanFactory.containsLocalBean(LIFECYCLE_PROCESSOR_BEAN_NAME)) {
 			this.lifecycleProcessor =
 					beanFactory.getBean(LIFECYCLE_PROCESSOR_BEAN_NAME, LifecycleProcessor.class);
@@ -952,7 +953,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see #doClose()
 	 */
 	@Override
-	public void registerShutdownHook() {
+	public void registerShutdownHook() {//应用程序突然 接收到 kill -2 pid    kill 发送一个信号命令命令关闭时毁掉的方法run。。
 		if (this.shutdownHook == null) {
 			// No shutdown hook registered yet.
 			this.shutdownHook = new Thread(SHUTDOWN_HOOK_THREAD_NAME) {
@@ -1376,6 +1377,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	@Override
 	public void start() {
 		getLifecycleProcessor().start();
+		//发送started事件
 		publishEvent(new ContextStartedEvent(this));
 	}
 

@@ -599,6 +599,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				logger.trace("Eagerly caching bean '" + beanName +
 						"' to allow for resolving potential circular references");
 			}
+			//这里会保存一个 提前实例化好的对象 的包装工厂....
 			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 		}
 
@@ -1598,7 +1599,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			if (pd.getWriteMethod() != null //可写的方法
 					&& !isExcludedFromDependencyCheck(pd) //依赖检测中没有被忽略
 					&& !pvs.contains(pd.getName()) // pvs 不包含该属性名
-					&& !BeanUtils.isSimpleProperty(pd.getPropertyType())) {//不是简单属性类型
+					&& !BeanUtils.isSimpleProperty(pd.getPropertyType())) {//不是简单属性类型 Long,String ,int ,integer
 				result.add(pd.getName());//这里只能添加对象类型,
 			}
 		}
