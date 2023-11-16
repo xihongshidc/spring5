@@ -13,10 +13,12 @@ import org.springframework.aop.target.SingletonTargetSource;
  */
 public class AOPDemo {
 	public static void main(String[] args) {
+//		System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "D:\\spring-study\\spring");
 
 		TargetBean targetBean = new TargetBean();
+		// 只是一个代理目标对象的类.
 		SingletonTargetSource singletonTargetSource = new SingletonTargetSource(targetBean);
-		//使用springaop 代理工厂手动创建代理对象，。。
+		//使用springaop 代理工厂手动创建代理对象 ，。。  CGLIB  动态代理
 		TargetBean proxy = (TargetBean)ProxyFactory.getProxy(singletonTargetSource);
 
 		proxy.show();
@@ -25,7 +27,7 @@ public class AOPDemo {
 	}
 }
 
-class TargetBean{
+class TargetBean implements B{
 	public void show() {
 		System.out.println("show");
 	}
