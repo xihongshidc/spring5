@@ -455,6 +455,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		ProxyFactory proxyFactory = new ProxyFactory();
 		proxyFactory.copyFrom(this);
 
+		//
 		//如果  proxy-target-class="true" 那么这下面的语句会跳过,这 样不管有没有接口，都使用 CGLIB 来生成代理
 		if (!proxyFactory.isProxyTargetClass()) {
 			if (shouldProxyTargetClass(beanClass, beanName)) {

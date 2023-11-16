@@ -2,6 +2,7 @@ package com.dc.springTest.aop;
 
 import com.dc.springTest.aop.service.OrderService;
 import com.dc.springTest.aop.service.UserService;
+import com.dc.springTest.aop.utils.AopUtilsT;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -18,12 +19,18 @@ public class SpringAopApplication {
 		ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/aop-demo.xml");
 
 		UserService userService = context.getBean(UserService.class);
-//		System.out.println(AopUtils.getTargetClass(userService).getName());
+		System.out.println(AopUtils.getTargetClass(userService).getName());
 		System.out.println(userService);
 		Object o = AopUtils.getTargetClass(userService).newInstance();
 		System.out.println(o);
 		OrderService orderService = context.getBean(OrderService.class);
 
+		try {
+			OrderService target = AopUtilsT.getTarget(orderService);
+			System.out.println(target+ " ***** " );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		System.out.println(orderService);
 		// spring  的容器保存的是一个代理的对象.
 		//此时调用代理对象 方法,会执行

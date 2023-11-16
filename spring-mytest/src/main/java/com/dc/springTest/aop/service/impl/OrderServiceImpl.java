@@ -2,12 +2,14 @@ package com.dc.springTest.aop.service.impl;
 
 import com.dc.springTest.aop.Order;
 import com.dc.springTest.aop.service.OrderService;
+import org.springframework.stereotype.Service;
 
 /**
  * Description:
  * Author: duancong
  * Date: 2023/11/10 10:13
  */
+@Service
 public class OrderServiceImpl implements OrderService {
 	@Override
 	public Order createOrder(String username, String product) {
