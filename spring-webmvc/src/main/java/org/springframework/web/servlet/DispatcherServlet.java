@@ -16,30 +16,8 @@
 
 package org.springframework.web.servlet;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -64,6 +42,26 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.util.NestedServletException;
 import org.springframework.web.util.WebUtils;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Central dispatcher for HTTP request handlers/controllers, e.g. for web UI controllers
@@ -313,39 +311,39 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/** MultipartResolver used by this servlet. */
 	@Nullable
-	private MultipartResolver multipartResolver;
+	private MultipartResolver multipartResolver;//会将文件请求 包装成一个MultipartHttpServletRequest 对象 {解析内容是Content-Type:multipart/*}
 
 	/** LocaleResolver used by this servlet. */
 	@Nullable
-	private LocaleResolver localeResolver;
+	private LocaleResolver localeResolver; //本地化国际化解析器
 
 	/** ThemeResolver used by this servlet. */
 	@Nullable
-	private ThemeResolver themeResolver;
+	private ThemeResolver themeResolver; //主题解析器
 
 	/** List of HandlerMappings used by this servlet. */
 	@Nullable
-	private List<HandlerMapping> handlerMappings;
+	private List<HandlerMapping> handlerMappings; //处理器匹配接口
 
 	/** List of HandlerAdapters used by this servlet. */
 	@Nullable
-	private List<HandlerAdapter> handlerAdapters;
+	private List<HandlerAdapter> handlerAdapters; //处理器适配器接口
 
 	/** List of HandlerExceptionResolvers used by this servlet. */
 	@Nullable
-	private List<HandlerExceptionResolver> handlerExceptionResolvers;
+	private List<HandlerExceptionResolver> handlerExceptionResolvers; //处理器异常解析器接口
 
 	/** RequestToViewNameTranslator used by this servlet. */
 	@Nullable
-	private RequestToViewNameTranslator viewNameTranslator;
+	private RequestToViewNameTranslator viewNameTranslator; //请求到视图名转换器
 
 	/** FlashMapManager used by this servlet. */
 	@Nullable
-	private FlashMapManager flashMapManager;
+	private FlashMapManager flashMapManager; //FlashMap 管理器接口, 负责重定向,保存参数到临时存储中(session)
 
 	/** List of ViewResolvers used by this servlet. */
 	@Nullable
-	private List<ViewResolver> viewResolvers;
+	private List<ViewResolver> viewResolvers; //视图解析器.
 
 
 	/**
@@ -411,7 +409,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	public DispatcherServlet(WebApplicationContext webApplicationContext) {
 		super(webApplicationContext);
-		setDispatchOptionsRequest(true);
+		setDispatchOptionsRequest(true);//允许发送options请求
 	}
 
 
@@ -499,16 +497,26 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * Initialize the strategy objects that this servlet uses.
 	 * <p>May be overridden in subclasses in order to initialize further strategy objects.
 	 */
+	//DispatcherServlet ，负责初始化 Spring MVC 的各个组件
 	//初始化 组件
 	protected void initStrategies(ApplicationContext context) {
+		//文件上传处理器
 		initMultipartResolver(context);
+		//请求解析区域设置处理器.
 		initLocaleResolver(context);
+		//请求解析主题处理器,
 		initThemeResolver(context);
+		//HandlerMapping 请求映射处理器
 		initHandlerMappings(context);
+		//处理器适配器.
 		initHandlerAdapters(context);
+		//异常解析器
 		initHandlerExceptionResolvers(context);
+		//请求到视图名的转换器
 		initRequestToViewNameTranslator(context);
+		//视图解析器
 		initViewResolvers(context);
+		//FlashMap管理器
 		initFlashMapManager(context);
 	}
 
@@ -909,6 +917,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 */
 	@Override
 	protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		//打印请求日志 日志级别为debug
 		logRequest(request);
 
 		// Keep a snapshot of the request attributes in case of an include,
@@ -941,6 +950,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		}
 
 		try {
+			//请求分发
 			doDispatch(request, response);
 		}
 		finally {
@@ -1010,17 +1020,20 @@ public class DispatcherServlet extends FrameworkServlet {
 			Exception dispatchException = null;
 
 			try {
+				//处理文件上传 请求
 				processedRequest = checkMultipart(request);
 				multipartRequestParsed = (processedRequest != request);
 
 				// Determine handler for the current request.
 				mappedHandler = getHandler(processedRequest);
 				if (mappedHandler == null) {
+					//没找到对应的 HandlerExecutionChain
 					noHandlerFound(processedRequest, response);
 					return;
 				}
 
 				// Determine handler adapter for the current request.
+				// <4> 获得当前 handler 对应的 HandlerAdapter 对象
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
 
 				// Process last-modified header, if supported by the handler.
@@ -1033,10 +1046,12 @@ public class DispatcherServlet extends FrameworkServlet {
 					}
 				}
 
+				//前置处理 拦截器
 				if (!mappedHandler.applyPreHandle(processedRequest, response)) {
 					return;
 				}
 
+				//真正的handler 方法 (controller)
 				// Actually invoke the handler.
 				mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
 
@@ -1044,17 +1059,20 @@ public class DispatcherServlet extends FrameworkServlet {
 					return;
 				}
 
+				//处理请求的视图名
 				applyDefaultViewName(processedRequest, mv);
+				//后置处理  拦截器
 				mappedHandler.applyPostHandle(processedRequest, response, mv);
 			}
 			catch (Exception ex) {
-				dispatchException = ex;
+				dispatchException = ex; //记录异常
 			}
 			catch (Throwable err) {
 				// As of 4.3, we're processing Errors thrown from handler methods as well,
 				// making them available for @ExceptionHandler methods and other scenarios.
 				dispatchException = new NestedServletException("Handler dispatch failed", err);
 			}
+			//处理正常和异常请求调用的结果
 			processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);
 		}
 		catch (Exception ex) {

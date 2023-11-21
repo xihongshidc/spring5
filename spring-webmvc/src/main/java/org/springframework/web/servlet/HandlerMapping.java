@@ -16,9 +16,9 @@
 
 package org.springframework.web.servlet;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.lang.Nullable;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Interface to be implemented by objects that define a mapping between
@@ -146,5 +146,6 @@ public interface HandlerMapping {
 	 */
 	@Nullable
 	HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception;
+	//根据请求获得其对应的处理器和拦截器们
 
 }

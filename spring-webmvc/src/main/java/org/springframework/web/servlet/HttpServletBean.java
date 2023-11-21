@@ -16,17 +16,8 @@
 
 package org.springframework.web.servlet;
 
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.MutablePropertyValues;
@@ -46,6 +37,13 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.support.ServletContextResourceLoader;
 import org.springframework.web.context.support.StandardServletEnvironment;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Simple extension of {@link javax.servlet.http.HttpServlet} which treats
@@ -148,9 +146,8 @@ public abstract class HttpServletBean extends HttpServlet implements Environment
 	//入口 spring 启动的时候 由于底层是基于web容器, （http 和servlet（ tomcat ，jetty ） 容器组成）
 	@Override
 	public final void init() throws ServletException {
-
+		// HttpServletBean 负责将 ServletConfig 设置到当前 Servlet 对象中
 		// Set bean properties from init parameters.
-		//
 		PropertyValues pvs = new ServletConfigPropertyValues(getServletConfig(), this.requiredProperties);
 		if (!pvs.isEmpty()) {
 			try {

@@ -1,4 +1,7 @@
-package com.dc.springTest;
+package com.dc.springTest.demo;
+
+import com.dc.springTest.SuperUser;
+import com.dc.springTest.Test;
 
 /**
  * Description:
@@ -8,6 +11,11 @@ package com.dc.springTest;
 public class Demo {
 	public static void main(String[] args) throws ClassNotFoundException {
 
+//		User user = new SuperUser(new GenericXmlApplicationContext());
+		//创建子类对象的时候默认会加载父类对象的空参构造方法.
+		SuperUser superUser = new SuperUser();
+
+//		System.out.println(user);
 		String a = new String("1");
 		String intern = a.intern();
 		String a1 = "1";

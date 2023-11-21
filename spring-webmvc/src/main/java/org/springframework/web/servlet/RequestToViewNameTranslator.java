@@ -16,9 +16,9 @@
 
 package org.springframework.web.servlet;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.lang.Nullable;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Strategy interface for translating an incoming
@@ -31,6 +31,7 @@ import org.springframework.lang.Nullable;
  */
 public interface RequestToViewNameTranslator {
 
+	//获取视图名
 	/**
 	 * Translate the given {@link HttpServletRequest} into a view name.
 	 * @param request the incoming {@link HttpServletRequest} providing

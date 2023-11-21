@@ -16,21 +16,6 @@
 
 package org.springframework.web.servlet;
 
-import java.io.IOException;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -69,6 +54,20 @@ import org.springframework.web.context.support.XmlWebApplicationContext;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.util.NestedServletException;
 import org.springframework.web.util.WebUtils;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
+import java.io.IOException;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
 /**
  * Base servlet for Spring's web framework. Provides integration with
@@ -527,6 +526,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		long startTime = System.currentTimeMillis();
 
 		try {
+			//负责初始化 Spring Servlet WebApplicationContext 容器
 			this.webApplicationContext = initWebApplicationContext();
 			initFrameworkServlet();
 		}
@@ -558,6 +558,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	 * @see #setContextConfigLocation
 	 */
 	protected WebApplicationContext initWebApplicationContext() {
+		//获取父WebApplicationContext
 		WebApplicationContext rootContext =
 				WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 		WebApplicationContext wac = null;
@@ -591,11 +592,13 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			wac = createWebApplicationContext(rootContext);
 		}
 
+		//如果未触发刷新事件主动刷新
 		if (!this.refreshEventReceived) {
 			// Either the context is not a ConfigurableApplicationContext with refresh
 			// support or the context injected at construction time had already been
 			// refreshed -> trigger initial onRefresh manually here.
 			synchronized (this.onRefreshMonitor) {
+				// 初始化spring mvc 组件
 				onRefresh(wac);
 			}
 		}
@@ -687,6 +690,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		wac.setServletContext(getServletContext());
 		wac.setServletConfig(getServletConfig());
 		wac.setNamespace(getNamespace());
+		//添加 事件刷新 监听器.
 		wac.addApplicationListener(new SourceFilteringListener(wac, new ContextRefreshListener()));
 
 		// The wac environment's #initPropertySources will be called in any case when the context
@@ -876,6 +880,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 			throws ServletException, IOException {
 
 		HttpMethod httpMethod = HttpMethod.resolve(request.getMethod());
+		//patch
 		if (httpMethod == HttpMethod.PATCH || httpMethod == null) {
 			processRequest(request, response);
 		}
@@ -884,6 +889,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		}
 	}
 
+	//GET 请求处理
 	/**
 	 * Delegate GET requests to processRequest/doService.
 	 * <p>Will also be invoked by HttpServlet's default implementation of {@code doHead},
@@ -898,6 +904,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		processRequest(request, response);
 	}
 
+	//POST 请求处理
 	/**
 	 * Delegate POST requests to {@link #processRequest}.
 	 * @see #doService
@@ -988,7 +995,9 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 	protected final void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		//当前时间
 		long startTime = System.currentTimeMillis();
+		//记录异常
 		Throwable failureCause = null;
 
 		LocaleContext previousLocaleContext = LocaleContextHolder.getLocaleContext();
@@ -1003,6 +1012,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 		initContextHolders(request, localeContext, requestAttributes);
 
 		try {
+			// 真正的执行逻辑入口
 			doService(request, response);
 		}
 		catch (ServletException | IOException ex) {
@@ -1020,6 +1030,7 @@ public abstract class FrameworkServlet extends HttpServletBean implements Applic
 				requestAttributes.requestCompleted();
 			}
 			logResult(request, response, failureCause, asyncManager);
+			// 发布请求处理完事件
 			publishRequestHandledEvent(request, response, startTime, failureCause);
 		}
 	}
