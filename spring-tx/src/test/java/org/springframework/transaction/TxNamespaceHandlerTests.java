@@ -16,11 +16,8 @@
 
 package org.springframework.transaction;
 
-import java.lang.reflect.Method;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.testfixture.beans.ITestBean;
 import org.springframework.context.ApplicationContext;
@@ -28,7 +25,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionAttributeSource;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.transaction.testfixture.CallCountingTransactionManager;
+
+import java.lang.reflect.Method;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -96,6 +97,32 @@ public class TxNamespaceHandlerTests {
 
 	private ITestBean getTestBean() {
 		return (ITestBean) context.getBean("testBean");
+	}
+
+//	@Autowired
+//	private PlatformTransactionManager transactionManager;
+
+	@Test
+	public void testDemo() {
+		//编程式事务
+		PlatformTransactionManager transactionManager = (PlatformTransactionManager) context.getBean("transactionManager");
+		TransactionTemplate transactionTemplate = new TransactionTemplate();
+
+		transactionTemplate.setTransactionManager(transactionManager);
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			@Override
+			protected void doInTransactionWithoutResult(TransactionStatus status) {
+
+				try {
+					System.out.println("111");
+					throw new RuntimeException("2");
+				} catch (Exception e) {
+					e.printStackTrace();
+					status.setRollbackOnly();
+				}
+			}
+		});
+
 	}
 
 }

@@ -16,11 +16,8 @@
 
 package org.springframework.transaction.support;
 
-import java.lang.reflect.UndeclaredThrowableException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -29,6 +26,8 @@ import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.util.Assert;
+
+import java.lang.reflect.UndeclaredThrowableException;
 
 /**
  * Template class that simplifies programmatic transaction demarcation and
@@ -137,9 +136,11 @@ public class TransactionTemplate extends DefaultTransactionDefinition
 			TransactionStatus status = this.transactionManager.getTransaction(this);
 			T result;
 			try {
+				//执行具体逻辑。
 				result = action.doInTransaction(status);
 			}
 			catch (RuntimeException | Error ex) {
+				// 回滚
 				// Transactional code threw application exception -> rollback
 				rollbackOnException(status, ex);
 				throw ex;

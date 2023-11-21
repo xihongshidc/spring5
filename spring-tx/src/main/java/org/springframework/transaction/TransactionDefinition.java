@@ -42,6 +42,7 @@ import org.springframework.lang.Nullable;
  * @see org.springframework.transaction.interceptor.TransactionAttribute
  */
 public interface TransactionDefinition {
+	//事务属性
 
 	/**
 	 * Support a current transaction; create a new one if none exists.
