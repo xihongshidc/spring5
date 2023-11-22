@@ -16,18 +16,8 @@
 
 package org.springframework.web.method;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringJoiner;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.core.MethodParameter;
@@ -41,6 +31,15 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Encapsulates information about a handler method consisting of a
@@ -100,10 +99,13 @@ public class HandlerMethod {
 		Assert.notNull(method, "Method is required");
 		this.bean = bean;
 		this.beanFactory = null;
+		//类型
 		this.beanType = ClassUtils.getUserClass(bean);
 		this.method = method;
+		//桥接方法
 		this.bridgedMethod = BridgeMethodResolver.findBridgedMethod(method);
 		this.parameters = initMethodParameters();
+		// 初始化 responseStatus、responseStatusReason 属性
 		evaluateResponseStatus();
 		this.description = initDescription(this.beanType, this.method);
 	}
@@ -185,7 +187,9 @@ public class HandlerMethod {
 
 	private MethodParameter[] initMethodParameters() {
 		int count = this.bridgedMethod.getParameterCount();
+		// 创建MethodParameter  数组
 		MethodParameter[] result = new MethodParameter[count];
+		//遍历 bridgeMethod 的参数, 逐个解析参数类型
 		for (int i = 0; i < count; i++) {
 			result[i] = new HandlerMethodParameter(i);
 		}

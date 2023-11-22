@@ -603,6 +603,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		this.handlerMappings = null;
 
 		if (this.detectAllHandlerMappings) {
+			//扫描已注册的HandlerMapping 的bean 们
 			// Find all HandlerMappings in the ApplicationContext, including ancestor contexts.
 			Map<String, HandlerMapping> matchingBeans =
 					BeanFactoryUtils.beansOfTypeIncludingAncestors(context, HandlerMapping.class, true, false);
@@ -625,6 +626,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		// Ensure we have at least one HandlerMapping, by registering
 		// a default HandlerMapping if no other mappings are found.
 		if (this.handlerMappings == null) {
+			//加载默认的HandlerMapping
 			this.handlerMappings = getDefaultStrategies(context, HandlerMapping.class);
 			if (logger.isTraceEnabled()) {
 				logger.trace("No HandlerMappings declared for servlet '" + getServletName() +
@@ -1134,6 +1136,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 		// Did the handler return a view to render?
 		if (mv != null && !mv.wasCleared()) {
+			//渲染页面
 			render(mv, request, response);
 			if (errorView) {
 				WebUtils.clearErrorRequestAttributes(request);
@@ -1150,6 +1153,7 @@ public class DispatcherServlet extends FrameworkServlet {
 			return;
 		}
 
+		//已完成处理拦截器
 		if (mappedHandler != null) {
 			// Exception (if any) is already handled..
 			mappedHandler.triggerAfterCompletion(request, response, null);
@@ -1316,12 +1320,15 @@ public class DispatcherServlet extends FrameworkServlet {
 		ModelAndView exMv = null;
 		if (this.handlerExceptionResolvers != null) {
 			for (HandlerExceptionResolver resolver : this.handlerExceptionResolvers) {
+				//异常解析
 				exMv = resolver.resolveException(request, response, handler, ex);
+				//解析成功就跳出循环
 				if (exMv != null) {
 					break;
 				}
 			}
 		}
+		//生成ModelAndView
 		if (exMv != null) {
 			if (exMv.isEmpty()) {
 				request.setAttribute(EXCEPTION_ATTRIBUTE, ex);
@@ -1365,6 +1372,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		View view;
 		String viewName = mv.getViewName();
 		if (viewName != null) {
+			//视图解析器 根据视图名 和国际化获取视图对象
 			// We need to resolve the view name.
 			view = resolveViewName(viewName, mv.getModelInternal(), locale, request);
 			if (view == null) {
@@ -1387,8 +1395,10 @@ public class DispatcherServlet extends FrameworkServlet {
 		}
 		try {
 			if (mv.getStatus() != null) {
+				//设置状态码
 				response.setStatus(mv.getStatus().value());
 			}
+			//渲染页面
 			view.render(mv.getModelInternal(), request, response);
 		}
 		catch (Exception ex) {

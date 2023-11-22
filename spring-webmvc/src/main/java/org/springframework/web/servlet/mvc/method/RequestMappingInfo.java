@@ -16,11 +16,6 @@
 
 package org.springframework.web.servlet.mvc.method;
 
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.http.HttpMethod;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
@@ -38,6 +33,10 @@ import org.springframework.web.servlet.mvc.condition.RequestConditionHolder;
 import org.springframework.web.servlet.mvc.condition.RequestMethodsRequestCondition;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.util.UrlPathHelper;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Request mapping information. Encapsulates the following request mapping conditions:
@@ -71,7 +70,7 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 
 	private static final RequestConditionHolder EMPTY_CUSTOM = new RequestConditionHolder(null);
 
-
+	//对应RequestMapping 注解
 	@Nullable
 	private final String name;
 

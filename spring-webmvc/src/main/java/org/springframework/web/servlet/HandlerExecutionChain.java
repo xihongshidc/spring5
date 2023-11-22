@@ -47,6 +47,7 @@ public class HandlerExecutionChain {
 	@Nullable
 	private List<HandlerInterceptor> interceptorList;
 
+	//主要用于实现 triggerAfterCompletion 的逻辑
 	private int interceptorIndex = -1;
 
 
@@ -136,13 +137,16 @@ public class HandlerExecutionChain {
 		if (!ObjectUtils.isEmpty(interceptors)) {
 			for (int i = 0; i < interceptors.length; i++) {
 				HandlerInterceptor interceptor = interceptors[i];
+				//拦截器前置处理
 				if (!interceptor.preHandle(request, response, this.handler)) {
 					triggerAfterCompletion(request, response, null);
+					//终止
 					return false;
 				}
 				this.interceptorIndex = i;
 			}
 		}
+		//返回true 前置处理成功
 		return true;
 	}
 
@@ -152,6 +156,7 @@ public class HandlerExecutionChain {
 	void applyPostHandle(HttpServletRequest request, HttpServletResponse response, @Nullable ModelAndView mv)
 			throws Exception {
 
+		//这里说明前置拦截已经全部执行完成了. 然后就从后往前遍历数组依次执行postHandle
 		HandlerInterceptor[] interceptors = getInterceptors();
 		if (!ObjectUtils.isEmpty(interceptors)) {
 			for (int i = interceptors.length - 1; i >= 0; i--) {
@@ -164,7 +169,7 @@ public class HandlerExecutionChain {
 	/**
 	 * Trigger afterCompletion callbacks on the mapped HandlerInterceptors.
 	 * Will just invoke afterCompletion for all interceptors whose preHandle invocation
-	 * has successfully completed and returned true.
+	 * has successfully completed and returned true. 执行所有返回true 的拦截器的afterCompletion 方法
 	 */
 	void triggerAfterCompletion(HttpServletRequest request, HttpServletResponse response, @Nullable Exception ex)
 			throws Exception {

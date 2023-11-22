@@ -16,15 +16,15 @@
 
 package org.springframework.web.servlet.handler;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.context.request.WebRequestInterceptor;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Contains and delegates calls to a {@link HandlerInterceptor} along with
@@ -45,10 +45,10 @@ import org.springframework.web.servlet.ModelAndView;
 public final class MappedInterceptor implements HandlerInterceptor {
 
 	@Nullable
-	private final String[] includePatterns;
+	private final String[] includePatterns; //匹配的路径
 
 	@Nullable
-	private final String[] excludePatterns;
+	private final String[] excludePatterns; //不匹配的路径
 
 	private final HandlerInterceptor interceptor;
 
@@ -145,19 +145,22 @@ public final class MappedInterceptor implements HandlerInterceptor {
 	 */
 	public boolean matches(String lookupPath, PathMatcher pathMatcher) {
 		PathMatcher pathMatcherToUse = (this.pathMatcher != null ? this.pathMatcher : pathMatcher);
+		//排重
 		if (!ObjectUtils.isEmpty(this.excludePatterns)) {
 			for (String pattern : this.excludePatterns) {
 				if (pathMatcherToUse.match(pattern, lookupPath)) {
-					return false;
+					return false;  //不匹配的路径 不添加拦截器
 				}
 			}
 		}
+		//默认包含
 		if (ObjectUtils.isEmpty(this.includePatterns)) {
 			return true;
 		}
+		//后包含
 		for (String pattern : this.includePatterns) {
 			if (pathMatcherToUse.match(pattern, lookupPath)) {
-				return true;
+				return true;//包含的路径 则添加拦截器
 			}
 		}
 		return false;

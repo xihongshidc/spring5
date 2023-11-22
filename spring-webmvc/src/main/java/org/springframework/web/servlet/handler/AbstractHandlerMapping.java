@@ -16,16 +16,6 @@
 
 package org.springframework.web.servlet.handler;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.BeanNameAware;
@@ -49,6 +39,15 @@ import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.util.UrlPathHelper;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Abstract base class for {@link org.springframework.web.servlet.HandlerMapping}
@@ -80,9 +79,9 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 	private PathMatcher pathMatcher = new AntPathMatcher();
 
-	private final List<Object> interceptors = new ArrayList<>();
+	private final List<Object> interceptors = new ArrayList<>();//用于保存外部添加或者扩展的拦截器数组... 我们基于springmvc 就可以通过添加外部添加拦截器实现..
 
-	private final List<HandlerInterceptor> adaptedInterceptors = new ArrayList<>();
+	private final List<HandlerInterceptor> adaptedInterceptors = new ArrayList<>(); //初始化后的拦截器数组
 
 	@Nullable
 	private CorsConfigurationSource corsConfigurationSource;
@@ -277,7 +276,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 
 
 	/**
-	 * Initializes the interceptors.
+	 * Initializes the interceptors. 初始化拦截器
 	 * @see #extendInterceptors(java.util.List)
 	 * @see #initInterceptors()
 	 */
@@ -307,7 +306,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 	 * from the current context and its ancestors. Subclasses can override and refine this policy.
 	 * @param mappedInterceptors an empty list to add {@link MappedInterceptor} instances to
 	 */
-	protected void detectMappedInterceptors(List<HandlerInterceptor> mappedInterceptors) {
+	protected void detectMappedInterceptors(List<HandlerInterceptor> mappedInterceptors) {//添加可路由的拦截器
 		mappedInterceptors.addAll(
 				BeanFactoryUtils.beansOfTypeIncludingAncestors(
 						obtainApplicationContext(), MappedInterceptor.class, true, false).values());
@@ -405,6 +404,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 			handler = obtainApplicationContext().getBean(handlerName);
 		}
 
+		//获取处理器执行链
 		HandlerExecutionChain executionChain = getHandlerExecutionChain(handler, request);
 
 		if (logger.isTraceEnabled()) {
@@ -440,7 +440,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 	 * @return the corresponding handler instance, or {@code null} if none found
 	 * @throws Exception if there is an internal error
 	 */
-	@Nullable
+	@Nullable   //模板方法 (交给子类去实现)
 	protected abstract Object getHandlerInternal(HttpServletRequest request) throws Exception;
 
 	/**
@@ -468,6 +468,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 				(HandlerExecutionChain) handler : new HandlerExecutionChain(handler));
 
 		String lookupPath = this.urlPathHelper.getLookupPathForRequest(request, LOOKUP_PATH);
+		//遍历拦截器数组
 		for (HandlerInterceptor interceptor : this.adaptedInterceptors) {
 			if (interceptor instanceof MappedInterceptor) {
 				MappedInterceptor mappedInterceptor = (MappedInterceptor) interceptor;
@@ -475,6 +476,7 @@ public abstract class AbstractHandlerMapping extends WebApplicationObjectSupport
 					chain.addInterceptor(mappedInterceptor.getInterceptor());
 				}
 			}
+			//无需匹配 直接添加到拦截器chain中
 			else {
 				chain.addInterceptor(interceptor);
 			}

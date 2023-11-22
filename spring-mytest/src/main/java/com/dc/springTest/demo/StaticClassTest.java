@@ -1,5 +1,7 @@
 package com.dc.springTest.demo;
 
+import java.util.HashMap;
+
 /**
  * Description: 静态代码快的加载时机
  * Author: duancong
@@ -28,6 +30,9 @@ public class StaticClassTest {
 //		staticClassTest.tes();
 //		staticClassTest.tes();
 //		Object o = aClass.newInstance();
+		HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
+		objectObjectHashMap.put("1","2*");
+		System.out.println(objectObjectHashMap.values());
 		StaticClassTest.tes();
 
 

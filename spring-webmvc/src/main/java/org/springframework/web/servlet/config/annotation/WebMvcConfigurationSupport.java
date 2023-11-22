@@ -16,16 +16,6 @@
 
 package org.springframework.web.servlet.config.annotation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.function.Predicate;
-
-import javax.servlet.ServletContext;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -101,6 +91,15 @@ import org.springframework.web.servlet.resource.ResourceUrlProviderExposingInter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.ViewResolverComposite;
 import org.springframework.web.util.UrlPathHelper;
+
+import javax.servlet.ServletContext;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.function.Predicate;
 
 /**
  * This is the main class providing the configuration behind the MVC Java config.
@@ -283,6 +282,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 
 		RequestMappingHandlerMapping mapping = createRequestMappingHandlerMapping();
 		mapping.setOrder(0);
+		//RequestMappingHandlerMapping  设置拦截器
 		mapping.setInterceptors(getInterceptors(conversionService, resourceUrlProvider));
 		mapping.setContentNegotiationManager(contentNegotiationManager);
 		mapping.setCorsConfigurations(getCorsConfigurations());
@@ -337,7 +337,9 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 			ResourceUrlProvider mvcResourceUrlProvider) {
 		if (this.interceptors == null) {
 			InterceptorRegistry registry = new InterceptorRegistry();
+			// 通过这个方法可以 添加自定义的拦截器
 			addInterceptors(registry);
+			//类型转换器拦截器
 			registry.addInterceptor(new ConversionServiceExposingInterceptor(mvcConversionService));
 			registry.addInterceptor(new ResourceUrlProviderExposingInterceptor(mvcResourceUrlProvider));
 			this.interceptors = registry.getInterceptors();
@@ -487,6 +489,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 
 		BeanNameUrlHandlerMapping mapping = new BeanNameUrlHandlerMapping();
 		mapping.setOrder(2);
+		//添加拦截器
 		mapping.setInterceptors(getInterceptors(conversionService, resourceUrlProvider));
 		mapping.setCorsConfigurations(getCorsConfigurations());
 		return mapping;
@@ -510,6 +513,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 
 		RouterFunctionMapping mapping = new RouterFunctionMapping();
 		mapping.setOrder(3);
+		//设置拦截器
 		mapping.setInterceptors(getInterceptors(conversionService, resourceUrlProvider));
 		mapping.setCorsConfigurations(getCorsConfigurations());
 		mapping.setMessageConverters(getMessageConverters());

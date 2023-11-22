@@ -16,19 +16,6 @@
 
 package org.springframework.web.servlet.mvc.method;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.InvalidMediaTypeException;
@@ -47,6 +34,18 @@ import org.springframework.web.servlet.handler.AbstractHandlerMethodMapping;
 import org.springframework.web.servlet.mvc.condition.NameValueExpression;
 import org.springframework.web.servlet.mvc.condition.ProducesRequestCondition;
 import org.springframework.web.util.WebUtils;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Abstract base class for classes for which {@link RequestMappingInfo} defines
@@ -72,6 +71,7 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 
 
 	protected RequestMappingInfoHandlerMapping() {
+		//设置名字mapping 映射器
 		setHandlerMethodMappingNamingStrategy(new RequestMappingInfoHandlerMethodMappingNamingStrategy());
 	}
 
@@ -204,6 +204,7 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 			return null;
 		}
 
+		//方法错误
 		if (helper.hasMethodsMismatch()) {
 			Set<String> methods = helper.getAllowedMethods();
 			if (HttpMethod.OPTIONS.matches(request.getMethod())) {
@@ -213,6 +214,7 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 			throw new HttpRequestMethodNotSupportedException(request.getMethod(), methods);
 		}
 
+		//可消费的Content-Type错误
 		if (helper.hasConsumesMismatch()) {
 			Set<MediaType> mediaTypes = helper.getConsumableMediaTypes();
 			MediaType contentType = null;
@@ -227,11 +229,13 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 			throw new HttpMediaTypeNotSupportedException(contentType, new ArrayList<>(mediaTypes));
 		}
 
+		//可生产的Content-Type错误
 		if (helper.hasProducesMismatch()) {
 			Set<MediaType> mediaTypes = helper.getProducibleMediaTypes();
 			throw new HttpMediaTypeNotAcceptableException(new ArrayList<>(mediaTypes));
 		}
 
+		//参数错误
 		if (helper.hasParamsMismatch()) {
 			List<String[]> conditions = helper.getParamConditions();
 			throw new UnsatisfiedServletRequestParameterException(conditions, request.getParameterMap());

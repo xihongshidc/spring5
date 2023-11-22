@@ -16,16 +16,16 @@
 
 package org.springframework.core;
 
+import org.springframework.lang.Nullable;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-
-import org.springframework.lang.Nullable;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.ReflectionUtils;
 
 /**
  * Defines the algorithm for searching for metadata-associated methods exhaustively
@@ -70,6 +70,7 @@ public final class MethodIntrospector {
 			final Class<?> targetClass = (specificHandlerType != null ? specificHandlerType : currentHandlerType);
 
 			ReflectionUtils.doWithMethods(currentHandlerType, method -> {
+				//获取到最匹配的方法
 				Method specificMethod = ClassUtils.getMostSpecificMethod(method, targetClass);
 				T result = metadataLookup.inspect(specificMethod);
 				if (result != null) {
