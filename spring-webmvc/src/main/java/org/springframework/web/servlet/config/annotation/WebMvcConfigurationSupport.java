@@ -479,6 +479,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	}
 
 	/**
+	 * 关键的两个Handler Mapping  <BeanNameUrlHandlerMapping  RequestMappingHandlerMapping >
 	 * Return a {@link BeanNameUrlHandlerMapping} ordered at 2 to map URL
 	 * paths to controller bean names.
 	 */
@@ -599,6 +600,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	}
 
 	/**
+	 * 创建RequestMappingHandlerAdapter 注册器
 	 * Returns a {@link RequestMappingHandlerAdapter} for processing requests
 	 * through annotated controller methods. Consider overriding one of these
 	 * other more fine-grained methods:

@@ -33,6 +33,7 @@ import org.springframework.util.ObjectUtils;
  */
 public abstract class AbstractDetectingUrlHandlerMapping extends AbstractUrlHandlerMapping {
 
+	//是否只扫描可访问的Handler们
 	private boolean detectHandlersInAncestorContexts = false;
 
 
@@ -55,6 +56,7 @@ public abstract class AbstractDetectingUrlHandlerMapping extends AbstractUrlHand
 	 */
 	@Override
 	public void initApplicationContext() throws ApplicationContextException {
+		//调用父类的初始化
 		super.initApplicationContext();
 		detectHandlers();
 	}
@@ -69,10 +71,12 @@ public abstract class AbstractDetectingUrlHandlerMapping extends AbstractUrlHand
 	 */
 	protected void detectHandlers() throws BeansException {
 		ApplicationContext applicationContext = obtainApplicationContext();
+		//
 		String[] beanNames = (this.detectHandlersInAncestorContexts ?
 				BeanFactoryUtils.beanNamesForTypeIncludingAncestors(applicationContext, Object.class) :
 				applicationContext.getBeanNamesForType(Object.class));
 
+		//遍历所有的beanName
 		// Take any bean name that we can determine URLs for.
 		for (String beanName : beanNames) {
 			String[] urls = determineUrlsForHandler(beanName);

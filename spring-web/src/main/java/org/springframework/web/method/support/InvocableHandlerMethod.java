@@ -16,10 +16,6 @@
 
 package org.springframework.web.method.support;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
@@ -31,6 +27,10 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.HandlerMethod;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 
 /**
  * Extension of {@link HandlerMethod} that invokes the underlying method with
@@ -131,6 +131,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	public Object invokeForRequest(NativeWebRequest request, @Nullable ModelAndViewContainer mavContainer,
 			Object... providedArgs) throws Exception {
 
+		//参数解析
 		Object[] args = getMethodArgumentValues(request, mavContainer, providedArgs);
 		if (logger.isTraceEnabled()) {
 			logger.trace("Arguments: " + Arrays.toString(args));
@@ -185,6 +186,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	 */
 	@Nullable
 	protected Object doInvoke(Object... args) throws Exception {
+		//设置方法可访问
 		ReflectionUtils.makeAccessible(getBridgedMethod());
 		try {
 			return getBridgedMethod().invoke(getBean(), args);
