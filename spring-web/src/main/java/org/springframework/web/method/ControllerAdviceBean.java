@@ -16,9 +16,6 @@
 
 package org.springframework.web.method;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryUtils;
@@ -31,6 +28,9 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Encapsulates information about an {@link ControllerAdvice @ControllerAdvice}
@@ -263,6 +263,7 @@ public class ControllerAdviceBean implements Ordered {
 		List<ControllerAdviceBean> adviceBeans = new ArrayList<>();
 		for (String name : BeanFactoryUtils.beanNamesForTypeIncludingAncestors(context, Object.class)) {
 			if (!ScopedProxyUtils.isScopedTarget(name)) {
+				//遍历所有的beanName
 				ControllerAdvice controllerAdvice = context.findAnnotationOnBean(name, ControllerAdvice.class);
 				if (controllerAdvice != null) {
 					// Use the @ControllerAdvice annotation found by findAnnotationOnBean()
@@ -278,6 +279,7 @@ public class ControllerAdviceBean implements Ordered {
 	@Nullable
 	private static Class<?> getBeanType(String beanName, BeanFactory beanFactory) {
 		Class<?> beanType = beanFactory.getType(beanName);
+		//获取目标类, 如果是代理类那么就获取代理类的父类,(cglib)
 		return (beanType != null ? ClassUtils.getUserClass(beanType) : null);
 	}
 

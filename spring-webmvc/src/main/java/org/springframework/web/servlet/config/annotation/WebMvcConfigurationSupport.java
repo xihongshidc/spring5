@@ -939,6 +939,7 @@ public class WebMvcConfigurationSupport implements ApplicationContextAware, Serv
 	}
 
 	/**
+	 * springmvc 默认提供的异常处理器
 	 * Returns a {@link HandlerExceptionResolverComposite} containing a list of exception
 	 * resolvers obtained either through {@link #configureHandlerExceptionResolvers} or
 	 * through {@link #addDefaultHandlerExceptionResolvers}.

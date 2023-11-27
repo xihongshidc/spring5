@@ -16,19 +16,17 @@
 
 package org.springframework.web.servlet.handler;
 
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.core.Ordered;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Set;
 
 /**
  * Abstract base class for {@link HandlerExceptionResolver} implementations.
@@ -53,10 +51,10 @@ public abstract class AbstractHandlerExceptionResolver implements HandlerExcepti
 	private int order = Ordered.LOWEST_PRECEDENCE;
 
 	@Nullable
-	private Set<?> mappedHandlers;
+	private Set<?> mappedHandlers; //匹配的处理器对象
 
 	@Nullable
-	private Class<?>[] mappedHandlerClasses;
+	private Class<?>[] mappedHandlerClasses; //匹配处理器类型的数组
 
 	@Nullable
 	private Log warnLogger;
@@ -137,6 +135,7 @@ public abstract class AbstractHandlerExceptionResolver implements HandlerExcepti
 			HttpServletRequest request, HttpServletResponse response, @Nullable Object handler, Exception ex) {
 
 		if (shouldApplyTo(request, handler)) {
+			//阻止缓存, 保证每次请求的都是最新的值
 			prepareResponse(ex, response);
 			ModelAndView result = doResolveException(request, response, handler, ex);
 			if (result != null) {
@@ -221,6 +220,7 @@ public abstract class AbstractHandlerExceptionResolver implements HandlerExcepti
 	 */
 	protected void prepareResponse(Exception ex, HttpServletResponse response) {
 		if (this.preventResponseCaching) {
+			//阻止缓存
 			preventCaching(response);
 		}
 	}

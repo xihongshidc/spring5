@@ -1074,7 +1074,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				// making them available for @ExceptionHandler methods and other scenarios.
 				dispatchException = new NestedServletException("Handler dispatch failed", err);
 			}
-			//处理正常和异常请求调用的结果
+			//处理正常和   异常请求调用的结果
 			processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);
 		}
 		catch (Exception ex) {
@@ -1113,6 +1113,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
+	 * 将异常解析为ModelAndView
 	 * Handle the result of handler selection and handler invocation, which is
 	 * either a ModelAndView or an Exception to be resolved to a ModelAndView.
 	 */
@@ -1331,6 +1332,7 @@ public class DispatcherServlet extends FrameworkServlet {
 		//生成ModelAndView
 		if (exMv != null) {
 			if (exMv.isEmpty()) {
+				//处理过后 的异常被记录在了attribute 中, 返回的modelAnd View 为null
 				request.setAttribute(EXCEPTION_ATTRIBUTE, ex);
 				return null;
 			}

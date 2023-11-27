@@ -16,6 +16,19 @@
 
 package org.springframework.web.multipart.support;
 
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.lang.Nullable;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.mail.internet.MimeUtility;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,20 +44,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-
-import javax.mail.internet.MimeUtility;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
-
-import org.springframework.http.ContentDisposition;
-import org.springframework.http.HttpHeaders;
-import org.springframework.lang.Nullable;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
-import org.springframework.web.multipart.MultipartException;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Spring MultipartHttpServletRequest adapter, wrapping a Servlet 3.0 HttpServletRequest
@@ -94,8 +93,10 @@ public class StandardMultipartHttpServletRequest extends AbstractMultipartHttpSe
 		try {
 			Collection<Part> parts = request.getParts();
 			this.multipartParameterNames = new LinkedHashSet<>(parts.size());
+			//最后就是将这个string 和文件 映射到了方法上的 MultipartFile
 			MultiValueMap<String, MultipartFile> files = new LinkedMultiValueMap<>(parts.size());
 			for (Part part : parts) {
+				// 处理每一个文件 包装对象.
 				String headerValue = part.getHeader(HttpHeaders.CONTENT_DISPOSITION);
 				ContentDisposition disposition = ContentDisposition.parse(headerValue);
 				String filename = disposition.getFilename();

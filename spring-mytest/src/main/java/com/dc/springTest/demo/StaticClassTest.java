@@ -15,6 +15,11 @@ public class StaticClassTest {
 	static {
 		System.out.println("1");
 	}
+	private static final StaticClassTest sta = new StaticClassTest();
+
+	public static StaticClassTest getInstance(){
+		return sta;
+	}
 
 	public static void tes(){
 		System.out.println(3);

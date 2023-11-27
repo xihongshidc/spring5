@@ -47,7 +47,7 @@ public class DelegatingWebMvcConfiguration extends WebMvcConfigurationSupport {
 
 	@Autowired(required = false)
 	public void setConfigurers(List<WebMvcConfigurer> configurers) {
-		//这里会添加所有的WebConfiguration
+		//这里会添加所有的WebConfiguration ,可以根据webConfiguration 进行配置mvc 的拦截器,类型转换器.
 		if (!CollectionUtils.isEmpty(configurers)) {
 			this.configurers.addWebMvcConfigurers(configurers);
 		}
