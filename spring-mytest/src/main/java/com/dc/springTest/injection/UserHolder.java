@@ -1,9 +1,8 @@
 package com.dc.springTest.injection;
 
 import com.dc.springTest.User;
-import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanNameAware;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -13,7 +12,7 @@ import javax.annotation.PreDestroy;
  * Author: duancong
  * Date: 2023/10/9 15:19
  */
-public class UserHolder implements BeanNameAware{
+public class UserHolder implements BeanNameAware, BeanClassLoaderAware {
 	private User user;
 	private Long id;
 	private String beanName;
@@ -75,5 +74,24 @@ public class UserHolder implements BeanNameAware{
 	@Override
 	public void setBeanName(String name) {
 		this.beanName=name;
+	}
+
+	private ClassLoader classLoader;
+
+	@Override
+	public void setBeanClassLoader(ClassLoader classLoader) {
+		this.classLoader = classLoader;
+	}
+
+	public String getBeanName() {
+		return beanName;
+	}
+
+	public ClassLoader getClassLoader() {
+		return classLoader;
+	}
+
+	public void setClassLoader(ClassLoader classLoader) {
+		this.classLoader = classLoader;
 	}
 }

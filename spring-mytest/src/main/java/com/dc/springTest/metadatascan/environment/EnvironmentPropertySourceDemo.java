@@ -2,9 +2,12 @@ package com.dc.springTest.metadatascan.environment;
 
 import com.dc.springTest.User;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.BeanExpressionResolver;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.expression.StandardBeanExpressionResolver;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.io.Resource;
@@ -19,7 +22,7 @@ import java.util.Map;
  */
 @PropertySource(name = "zhangsan",value = "META-INF/superuser.properties")
 public class EnvironmentPropertySourceDemo {
-	@Value("${superUser.name}")
+	@Value("%{'dccc'.concat('12')} + %{2 ^ 2} + %{(T(Math).random())}") // el 表达式 应用
 	private String superName; //Apollo 支持动态的配置.
 
 	@Value("${resource}")
@@ -45,6 +48,15 @@ public class EnvironmentPropertySourceDemo {
 		map.put("user.age","9654");
 		org.springframework.core.env.PropertySource propertySource=new MapPropertySource("dc",map);
 		propertySources.addFirst(propertySource);
+		BeanFactoryPostProcessor beanFactoryPostProcessor = (beanFactory) -> {
+			BeanExpressionResolver beanExpressionResolver = beanFactory.getBeanExpressionResolver();
+			if (beanExpressionResolver instanceof StandardBeanExpressionResolver) {
+				StandardBeanExpressionResolver beanExpressionResolver1 = (StandardBeanExpressionResolver) beanExpressionResolver;
+				beanExpressionResolver1.setExpressionPrefix("%{");// 自定义el表达式前缀 默认是#{
+				beanExpressionResolver1.setExpressionSuffix("}");//自定义el 表达式后缀. 默认是 }
+			}
+		};
+		annotationConfigApplicationContext.addBeanFactoryPostProcessor(beanFactoryPostProcessor);
 
 		annotationConfigApplicationContext.refresh(); // refresh 完之后那么类的属性都已经注入完了,所以再添加PropertySource 其实作用并不大
 		Map<String, User> beansOfType = annotationConfigApplicationContext.getBeansOfType(User.class);

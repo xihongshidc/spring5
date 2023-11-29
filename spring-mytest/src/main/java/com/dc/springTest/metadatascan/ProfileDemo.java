@@ -32,7 +32,7 @@ public class ProfileDemo {
 	}
 
 	@Bean("user")
-	@Profile("two")
+//	@Profile("two")
 	@Conditional(UserCondition.class)
 	public User user2(){
 		User user = new User();

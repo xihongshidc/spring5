@@ -39,7 +39,7 @@ public class HandlerExecutionChain {
 
 	private static final Log logger = LogFactory.getLog(HandlerExecutionChain.class);
 
-	private final Object handler;//处理器
+	private final Object handler;   //处理器  HandlerMethod
 
 	@Nullable
 	private HandlerInterceptor[] interceptors;//拦截器数组

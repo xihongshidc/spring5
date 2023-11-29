@@ -2,6 +2,7 @@ package com.dc.springTest.injection;
 
 import com.dc.springTest.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -30,14 +31,31 @@ public class AnnotationMethodDependenceInject {
 		System.out.println(bean.userHolder);
 		System.out.println(bean.userHolder1);
 		System.out.println(bean);
+		System.out.println(AnnotationMethodDependenceInject.name);
 		annotationConfigApplicationContext.close();
+		System.out.println(AnnotationMethodDependenceInject.name); //类级别的属性.
 
-
+		System.out.println("**************************** " );
+		AnnotationMethodDependenceInject annotationMethodDependenceInject = new AnnotationMethodDependenceInject();
+		System.out.println(annotationMethodDependenceInject.userHolder);  // 类级别 静态属性
+		System.out.println(annotationMethodDependenceInject.userHolder.getBeanName() +annotationMethodDependenceInject.userHolder.getClassLoader() );
+		UserHolder userHolder = new UserHolder();
+		System.out.println(userHolder.getBeanName() +" *** "+ userHolder.getClassLoader());
 	}
 
-	UserHolder userHolder;
+	//静态属性
+	static String name;
+	//静态属性
+	static UserHolder userHolder;
+
 	UserHolder userHolder1;
 
+	//注入属性
+	@Value("${user.name}")
+	public void value(String name) {
+		System.out.println(name+"***");
+		this.name= name;
+	}
 
 	@Autowired
 	public void initUserHolder(UserHolder userHolder){
