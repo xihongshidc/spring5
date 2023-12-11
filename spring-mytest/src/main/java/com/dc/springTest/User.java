@@ -104,7 +104,7 @@ public class User implements BeanFactoryAware , ApplicationContextAware, Initial
 		System.out.println(annotation);
 	}
 
-	public String getName() {
+	private String getName() {
 		return name;
 	}
 

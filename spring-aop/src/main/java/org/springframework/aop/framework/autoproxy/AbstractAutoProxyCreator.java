@@ -234,6 +234,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 
 	// 下面两个方法是自动代理创建器创建代理对象的唯二的两个节点~
 
+	// 如果这个bean 需要被代理，在循环依赖的时候会提前创建这个bean 的代理对象，
 	// 提前暴露代理对象的引用  它肯定在postProcessAfterInitialization之前执行
 	// 所以它并不需要判断啥的~~~~  创建好后放进缓存earlyProxyReferences里  注意此处value是原始Bean
 	@Override

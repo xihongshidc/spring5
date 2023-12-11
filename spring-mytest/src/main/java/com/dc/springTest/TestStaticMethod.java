@@ -1,7 +1,6 @@
 package com.dc.springTest;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.env.Environment;
 
 /**
  * Description:
@@ -19,5 +18,15 @@ public class TestStaticMethod {
 		//还有容器内建依赖(非Bean)    classPathXmlApplicationContext
 		System.out.println(user);
 		System.out.println(superUser==user);
+		String s = "dc";
+
+		TestStaticMethod testStaticMethod = new TestStaticMethod();
+		testStaticMethod.username=s;
+		s= "mmmd";
+		System.out.println(testStaticMethod.username);
+
 	}
+
+	private String username;
+
 }

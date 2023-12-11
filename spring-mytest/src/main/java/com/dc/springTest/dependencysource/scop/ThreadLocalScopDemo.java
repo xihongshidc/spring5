@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Scope;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Description: 自定义线程级别的作用域对象创建.
@@ -43,15 +45,20 @@ public class ThreadLocalScopDemo {
 		//依赖查找。
 //		ThreadLocalScopDemo bean = annotationConfigApplicationContext.getBean(ThreadLocalScopDemo.class);
 		ThreadLocalScopDemo bean = annotationConfigApplicationContext.getBean("threadLocalScopDemo",ThreadLocalScopDemo.class);
+		ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-		for (int i = 0; i < 3; i++) {
-			Thread thread = new Thread(() -> {
+		for (int i = 0; i < 13; i++) {
+			executorService.execute(() -> {
 				System.out.printf(" bean : %s   , thread : %d" ,annotationConfigApplicationContext.getBean(UserHolder.class).toString(),Thread.currentThread().getId());
 			});
-			System.out.println();
-			thread.start();
-			thread.join();
+//			Thread thread = new Thread(() -> {
+//				System.out.printf(" bean : %s   , thread : %d" ,annotationConfigApplicationContext.getBean(UserHolder.class).toString(),Thread.currentThread().getId());
+//			});
+//			System.out.println();
+//			thread.start();
+//			thread.join();
 		}
+		Thread.sleep(10000l);
 		annotationConfigApplicationContext.close();
 		Set<Map.Entry<String, Runnable>> entries = ThreadLocalScop.requestDestructionCallbacks.entrySet();
 		for (Map.Entry<String, Runnable> entry : entries) {

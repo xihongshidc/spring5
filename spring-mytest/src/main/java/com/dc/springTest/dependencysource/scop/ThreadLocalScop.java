@@ -28,6 +28,7 @@ public class ThreadLocalScop implements Scope {
 
 	@Override
 	public Object get(String name, ObjectFactory<?> objectFactory) {
+		//获取当前线程对应的ThreadLocalMap.Entry
 		Map<String, Object> stringObjectMap = namedThreadLocal.get();
 		Object o = stringObjectMap.get(name);
 		if (o == null) {

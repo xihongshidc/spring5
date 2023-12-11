@@ -22,10 +22,10 @@ import java.util.Map;
  */
 @PropertySource(name = "zhangsan",value = "META-INF/superuser.properties")
 public class EnvironmentPropertySourceDemo {
-	@Value("%{'dccc'.concat('12')} + %{2 ^ 2} + %{(T(Math).random())}") // el 表达式 应用
+	@Value("%{('dccc'.concat('12'))+1} + %{2 ^ 2} + %{(T(Math).random())}") // el 表达式 应用
 	private String superName; //Apollo 支持动态的配置.
 
-	@Value("${resource}")
+	@Value("&{resource}&")
 	private Resource resource; //类型转换, 字符串转为Resource
 
 	@Bean
@@ -49,6 +49,7 @@ public class EnvironmentPropertySourceDemo {
 		org.springframework.core.env.PropertySource propertySource=new MapPropertySource("dc",map);
 		propertySources.addFirst(propertySource);
 		BeanFactoryPostProcessor beanFactoryPostProcessor = (beanFactory) -> {
+
 			BeanExpressionResolver beanExpressionResolver = beanFactory.getBeanExpressionResolver();
 			if (beanExpressionResolver instanceof StandardBeanExpressionResolver) {
 				StandardBeanExpressionResolver beanExpressionResolver1 = (StandardBeanExpressionResolver) beanExpressionResolver;
@@ -58,6 +59,8 @@ public class EnvironmentPropertySourceDemo {
 		};
 		annotationConfigApplicationContext.addBeanFactoryPostProcessor(beanFactoryPostProcessor);
 
+		annotationConfigApplicationContext.getEnvironment().setPlaceholderPrefix("&{"); //参数占位符的扩展。
+		annotationConfigApplicationContext.getEnvironment().setPlaceholderSuffix("}&");
 		annotationConfigApplicationContext.refresh(); // refresh 完之后那么类的属性都已经注入完了,所以再添加PropertySource 其实作用并不大
 		Map<String, User> beansOfType = annotationConfigApplicationContext.getBeansOfType(User.class);
 		for (Map.Entry<String, User> stringUserEntry : beansOfType.entrySet()) {

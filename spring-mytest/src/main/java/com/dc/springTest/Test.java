@@ -2,6 +2,7 @@ package com.dc.springTest;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.lang.reflect.Method;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -36,7 +37,12 @@ public class Test {
 		System.out.println(objectObjectLinkedHashMap instanceof Cloneable);
 
 //		System.out.println(ClassLoader.getSystemClassLoader().toString());
-////		Class<?> user1 = ClassLoader.getSystemClassLoader().loadClass("com.dc.springTest.User");
+		Class<?> user1 = ClassLoader.getSystemClassLoader().loadClass("com.dc.springTest.User");
+		Method[] methods = user1.getMethods();
+		int length = methods.length;
+		for (int i = 0; i < length; i++) {
+			System.out.println(methods[i]);
+		}
 //		System.out.println("com.dc.springTest.User");
 //		Class<?> user1 = Class.forName("com.dc.springTest.User");
 //		Method[] methods = user1.getMethods();

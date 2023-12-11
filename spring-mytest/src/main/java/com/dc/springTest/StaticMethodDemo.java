@@ -17,7 +17,7 @@ import javax.annotation.PostConstruct;
 public class StaticMethodDemo {
 
 	@Autowired
-	private User userFactory;
+	private User user;
 
 	//实例化的方式, 构造器, 静态工厂(静态方法) , 普通工厂方法实例化 ,Factorybean 实例化
 	public static void main(String[] args) {
@@ -26,10 +26,11 @@ public class StaticMethodDemo {
 		annotationConfigApplicationContext.register(UserFactory.class);
 		annotationConfigApplicationContext.refresh();
 //		User user1 = (User) annotationConfigApplicationContext.getBean("user");
-//		System.out.println(user1);
+		User user2 = (User) annotationConfigApplicationContext.getBean("userFactory");
+		System.out.println(user2);
 		StaticMethodDemo bean = annotationConfigApplicationContext.getBean(StaticMethodDemo.class);
 
-		System.out.println("实例对象 : "+bean.userFactory);
+		System.out.println("实例对象 : "+bean.user);
 	}
 
 	private static String name;
