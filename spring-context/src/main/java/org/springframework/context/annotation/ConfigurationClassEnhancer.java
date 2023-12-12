@@ -16,15 +16,8 @@
 
 package org.springframework.context.annotation;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Proxy;
-import java.util.Arrays;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.aop.scope.ScopedProxyFactoryBean;
 import org.springframework.asm.Type;
 import org.springframework.beans.factory.BeanFactory;
@@ -55,6 +48,12 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Proxy;
+import java.util.Arrays;
+
 /**
  * Enhances {@link Configuration} classes by generating a CGLIB subclass which
  * interacts with the Spring container to respect bean scoping semantics for
@@ -74,7 +73,7 @@ class ConfigurationClassEnhancer {
 
 	// The callbacks to use. Note that these callbacks must be stateless.
 	private static final Callback[] CALLBACKS = new Callback[] {
-			new BeanMethodInterceptor(),
+			new BeanMethodInterceptor(),//@Bean 拦截器.
 			new BeanFactoryAwareMethodInterceptor(),
 			NoOp.INSTANCE
 	};
@@ -124,7 +123,7 @@ class ConfigurationClassEnhancer {
 		enhancer.setUseFactory(false);
 		enhancer.setNamingPolicy(SpringNamingPolicy.INSTANCE);
 		enhancer.setStrategy(new BeanFactoryAwareGeneratorStrategy(classLoader));
-		enhancer.setCallbackFilter(CALLBACK_FILTER);
+		enhancer.setCallbackFilter(CALLBACK_FILTER);//设置Callback 增强数组,
 		enhancer.setCallbackTypes(CALLBACK_FILTER.getCallbackTypes());
 		return enhancer;
 	}
@@ -257,7 +256,7 @@ class ConfigurationClassEnhancer {
 		}
 
 		public static boolean isSetBeanFactory(Method candidateMethod) {
-			return (candidateMethod.getName().equals("setBeanFactory") &&
+			return (candidateMethod.getName().equals("setBeanFactory") &&//不能是setBeanFactory
 					candidateMethod.getParameterCount() == 1 &&
 					BeanFactory.class == candidateMethod.getParameterTypes()[0] &&
 					BeanFactoryAware.class.isAssignableFrom(candidateMethod.getDeclaringClass()));
@@ -404,7 +403,7 @@ class ConfigurationClassEnhancer {
 		public boolean isMatch(Method candidateMethod) {
 			return (candidateMethod.getDeclaringClass() != Object.class &&
 					!BeanFactoryAwareMethodInterceptor.isSetBeanFactory(candidateMethod) &&
-					BeanAnnotationHelper.isBeanAnnotated(candidateMethod));
+					BeanAnnotationHelper.isBeanAnnotated(candidateMethod));//@Bean标注的注解.
 		}
 
 		private ConfigurableBeanFactory getBeanFactory(Object enhancedConfigInstance) {
@@ -441,9 +440,10 @@ class ConfigurationClassEnhancer {
 		 * to happen on Groovy classes).
 		 */
 		private boolean isCurrentlyInvokedFactoryMethod(Method method) {
-			Method currentlyInvoked = SimpleInstantiationStrategy.getCurrentlyInvokedFactoryMethod();
+			Method currentlyInvoked = SimpleInstantiationStrategy.getCurrentlyInvokedFactoryMethod();// 保存当前线程正 加载的@Bean Method 方法。
 			return (currentlyInvoked != null && method.getName().equals(currentlyInvoked.getName()) &&
 					Arrays.equals(method.getParameterTypes(), currentlyInvoked.getParameterTypes()));
+			// 经过比较发现当前执行的@Bean Method 和 传入method 不是一个。  也就是用户自己调用了。
 		}
 
 		/**

@@ -24,7 +24,7 @@ public class ExpressionDemo {
 		Expression expression2 = spelExpressionParser.parseExpression("('Hello World').concat(#end)");
 		StandardEvaluationContext standardEvaluationContext = new StandardEvaluationContext();
 //		//添加 上下文,
-//		standardEvaluationContext.setVariable("end","!!");
+		standardEvaluationContext.setVariable("end","!!");
 		System.out.println(expression2.getValue(standardEvaluationContext));
 
 		//表达式模板  前缀+表达式+后缀

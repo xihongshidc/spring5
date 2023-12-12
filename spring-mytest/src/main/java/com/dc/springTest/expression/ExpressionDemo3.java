@@ -57,9 +57,9 @@ public class ExpressionDemo3 {
 
 		// 类相关表达式  T(Type)  Type 类的全限定名 ,“java.lang”包除外
 		Class result7 = spelExpressionParser.parseExpression("T(String)").getValue(Class.class);
-		System.out.println(result7);
+		System.out.println("result7" + result7);
 		Class result8 = spelExpressionParser.parseExpression("T(com.dc.springTest.expression.ExpressionDemo)").getValue(Class.class);
-		System.out.println(result8);
+		System.out.println("result8" + result8);
 		// 静态字段
 		Integer result9 = spelExpressionParser.parseExpression("T(Integer).MIN_VALUE").getValue(Integer.class);
 		System.out.println(result9);
