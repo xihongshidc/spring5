@@ -2,18 +2,9 @@ package com.dc.springTest.dependencysource.configuration;
 
 import com.dc.springTest.User;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.config.YamlMapFactoryBean;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.MapPropertySource;
-import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.io.Resource;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Description:  todo yaml
@@ -23,7 +14,7 @@ import java.util.Map;
 //@ImportResource("META-INF/yaml-property-source.xml")
 @PropertySource(name = "dddd",value = "META-INF/user.yaml", factory = YamlPropertySourceFactory.class)//扩展yaml 格式读取为Properties文件
 public class YamlPropertySourceDemo {
-	@Value("${user.age}")
+	@Value("${user.age2:d}")
 	private String superName;
 //
 //	@Value("${resource}")

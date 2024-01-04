@@ -16,21 +16,8 @@
 
 package org.springframework.web.method.annotation;
 
-import java.beans.ConstructorProperties;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.core.DefaultParameterNameDiscoverer;
@@ -53,6 +40,18 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
+
+import java.beans.ConstructorProperties;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Resolve {@code @ModelAttribute} annotated method arguments and handle
@@ -134,7 +133,7 @@ public class ModelAttributeMethodProcessor implements HandlerMethodArgumentResol
 			attribute = mavContainer.getModel().get(name);
 		}
 		else {
-			// Create attribute instance
+			// Create attribute instance 创建对象实例。
 			try {
 				attribute = createAttribute(name, parameter, binderFactory, webRequest);
 			}
@@ -152,11 +151,13 @@ public class ModelAttributeMethodProcessor implements HandlerMethodArgumentResol
 		}
 
 		if (bindingResult == null) {
+			// bean 属性绑定，
 			// Bean property binding and validation;
 			// skipped in case of binding failure on construction.
 			WebDataBinder binder = binderFactory.createBinder(webRequest, attribute, name);
 			if (binder.getTarget() != null) {
 				if (!mavContainer.isBindingDisabled(name)) {
+					//  数据绑定
 					bindRequestParameters(binder, webRequest);
 				}
 				validateIfApplicable(binder, parameter);

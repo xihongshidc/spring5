@@ -3,10 +3,8 @@ package com.dc.springTest.annotation;
 import com.dc.springTest.User;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.ObjectFactory;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
