@@ -20,4 +20,6 @@ import java.lang.annotation.Target;
 // 法三 ： 通过ImportBeanDefinitionRegistrar 实现类进行bean 定义的注册，
 //@Import(EnableHelloworldBeandefinitionResgistar.class)
 public @interface EnableHellworld {
+
+	public final static int a =19;
 }

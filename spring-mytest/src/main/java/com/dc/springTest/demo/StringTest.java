@@ -1,25 +1,42 @@
 package com.dc.springTest.demo;
 
+import java.util.HashSet;
+
 /**
  * Description:
+ *  java 是一个跨平台的语言。 对于jvm虚拟机来说只需要遵循jvm字节码规范，任何编程语言都可以都可以编译生成字节码，然后由jvm解释执行。，
  * Author: duancong
  * Date: 2024/1/3 16:09
  */
 public class StringTest {
+
 	private final int num =2;
+	private final static int num2 =2;
+	private final static String num3 ="sdasdf";  //在准备阶段附上初始值.
+
+	private static int a = 2; //在准备阶段附上
+
 	public static void main(String[] args) {
 		//idea 可以反编译class 文件  ,方便用户更直观的查看.
 		//javap -v **.class > aaa.txt
-		String s = new String("addz") + new String("ddfz");
+//		String s = new String("addz") + new String("ddfz");
 		//总共创建四个对象 两个String 对象， 一个Stringbuilder 对象，然后Stringbuilder.toString() 产生一个新对象
-		System.out.println(s);
-		System.out.println("asd");
+//		System.out.println(s);
+//		System.out.println("asd");
 		//操作码  操作数
 		//class 类文件: 二进制流
+		StringTest.method();
 
 	}
-	{
+	static {
 		/**
+		 *
+		 * class 文件结构 : 魔数 ,副版本 ,主版本号  常量池, 访问标识Access flags ,类索引 父类索引, 接口集合,字段集合,方法集合（code 属性包含指令。code属性中还有属性，）, 属性表(源文件信息。)
+		 *
+		 * 常量池是class文件的重要信息 ,  属性表信息会引用常量池中的数据, 在java.exe 程序加载class文件之后会将其加载进内存, 然后常量池变成运行时常量池, 字符串也变成字符串常量池.
+		 *
+		 * 字段:访问权限,字段名索引, 字段描述(字段类型),
+		 *
 		 * 高版本 java 可以解释运行低版本的class 文件
 		 *
 		 * class 文件中不包含真正的直接引用。 类加载之后才会将这些符号引用替换为运行时常量池中的直接引用。。
@@ -87,5 +104,62 @@ public class StringTest {
 		 * 002b 0034 0035 0000 0023 0008 0036 0037
 		 * 0001 0001 0038 0000 0002 0039
 		 */
+	}
+	/**
+	 * description:
+	 * 加载
+	 * 生成模板数据,
+	 * -----连接 : 验证 准备 和 解析
+	 * 验证包含格式校验 : 魔术 校验 版本号校验, 数据的每一项对应的长度是否都相等.
+	 *
+	 * 语义检查:
+	 * java 除了object以外所有的类都必须有一个父类存在.
+	 * 类的方法是否重写,以及final 修饰的方法或者类不能被重写或者继承
+	 * 在继承中,非抽象类是否实现了所有抽象方法或者接口方法
+	 * 方法的兼容性. (比如方法除了返回值其他都一样,这对于虚拟机是没法识别的.)
+	 *
+	 * 字节码的校验:
+	 * 在字节码执行过程中如果跳转到一个不可执行的指令.或者跳转到一条不存在的指令.
+	 * 函数调用的是参数类型是否一致.
+	 *
+	 *
+	 * 准备: 准备阶段是为非finla修饰的静态变量分配内存空间,为其分配默认值.
+	 *         final static 修饰的 是静态常量 在准备阶段显示赋初始值.( 针对基本数据类型的字段来说, 如果代码中是显示的赋值 而不是通过对象的调用获取到值.)
+	 *
+	 *      如果使用字面量的方式定义一个字符串常量的话, 也是在准备环节直接显示赋值  , 对于引用类型 的 final static 是在初始化阶段赋初始值.
+	 *
+	 * 解析:  将符号引用替换为直接引用,也就是获得类,方法,字段 在内存中的指针或者偏移量  ,因此 存在直接引用可以肯定系统中存在该类或者该方法,或者该字段,
+	 *
+	 *
+	 * -----初始化
+	 *
+	 *   static final 修饰 ,只要涉及到方法调用或者对象的使用都会在初始化阶段进行赋值初始值.
+	 *  执行<clinit>() 静态代码块,并且为非final修饰静态变量赋值.或者final修饰的引用类型赋值.
+	 *
+	 *
+	 *
+	 *
+	 *
+	 */
+
+	public static void method(){
+
+		try {
+			HashSet hashSet=new HashSet();
+			HashSet hashSet1=new HashSet();
+			boolean add = hashSet.add("1");
+			boolean add2 = hashSet1.add("1");
+			boolean add1 = hashSet.add("1");
+			System.out.println(add);
+			System.out.println(add1);
+			System.out.println("1".hashCode());
+			//方法区创建了一个模板数据。 并在堆空间创建一个class 对象，然后指向的是方法区中的数据。
+			Class<?> aClass = Class.forName("java.lang.String");
+			//基本数据类型由虚拟机预先定义好，引用数据类型则需要进行类的加载。
+			int a = 21;
+			String[] ar ={"","1"};
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 }

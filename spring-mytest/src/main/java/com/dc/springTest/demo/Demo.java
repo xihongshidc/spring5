@@ -3,6 +3,10 @@ package com.dc.springTest.demo;
 import com.dc.springTest.SuperUser;
 import com.dc.springTest.Test;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Description:
  * Author: duancong
@@ -14,6 +18,8 @@ public class Demo {
 //		User user = new SuperUser(new GenericXmlApplicationContext());
 		//创建子类对象的时候默认会加载父类对象的空参构造方法.
 		SuperUser superUser = new SuperUser();
+
+		Object o = new Object();
 
 //		System.out.println(user);
 		String a = new String("1");
@@ -28,6 +34,10 @@ public class Demo {
 		Class<? extends Test> aClass2 = test.getClass();
 		System.out.println(aClass == aClass2);
 		System.out.println(aClass == aClass1);
+
+		HashMap<String, List<String>> map = new HashMap<>();
+		List a2 = map.computeIfAbsent("a", k -> new ArrayList<String>());
+
 
 	}
 }

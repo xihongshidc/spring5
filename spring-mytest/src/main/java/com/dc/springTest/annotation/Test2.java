@@ -10,6 +10,9 @@ import org.springframework.core.env.Environment;
  * Date: 2023/9/24 22:10
  */
 public class Test2 {
+	static {
+		System.out.println("1");
+	}
 	public static void main(String[] args) {
 
 
