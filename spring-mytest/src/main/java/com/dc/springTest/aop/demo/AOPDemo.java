@@ -3,6 +3,7 @@ package com.dc.springTest.aop.demo;
 import org.springframework.aop.TargetSource;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.target.SingletonTargetSource;
+import org.springframework.cglib.core.DebuggingClassWriter;
 
 /**
  * Description: TargetSource 组件本身与 SpringIoC 容器无关，换句话说，target 的生命周期不一定是受 spring 容器管理的，
@@ -13,7 +14,7 @@ import org.springframework.aop.target.SingletonTargetSource;
  */
 public class AOPDemo {
 	public static void main(String[] args) {
-//		System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "D:\\spring-study\\spring");
+		System.setProperty(DebuggingClassWriter.DEBUG_LOCATION_PROPERTY, "D:\\spring-study\\spring");
 
 		TargetBean targetBean = new TargetBean();
 		// 只是一个代理目标对象的类.
@@ -27,7 +28,7 @@ public class AOPDemo {
 	}
 }
 
-class TargetBean implements B{
+class TargetBean implements B ,C{
 	public void show() {
 		System.out.println("show");
 	}

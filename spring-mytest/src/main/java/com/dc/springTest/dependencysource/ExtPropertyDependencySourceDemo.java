@@ -1,9 +1,11 @@
 package com.dc.springTest.dependencysource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
 
@@ -25,8 +27,11 @@ public class ExtPropertyDependencySourceDemo {
 	private String url;
 
 
+	@Autowired
+	private Environment environment;
 	@PostConstruct
 	public void init(){
+		System.out.println(environment);
 		System.out.println(value);
 		System.out.println(url);
 		System.out.println(id);
@@ -41,9 +46,10 @@ public class ExtPropertyDependencySourceDemo {
 //		annotationConfigApplicationContext.addBeanFactoryPostProcessor(beanFactory -> {
 //			beanFactory.registerResolvableDependency(String.class,"hello World !!! ");
 //		});
-
 		//启动应用上下文
 		annotationConfigApplicationContext.refresh();
+		String s = annotationConfigApplicationContext.getEnvironment().resolvePlaceholders("${user:23}");
+		System.out.println(s);
 
 	}
 }

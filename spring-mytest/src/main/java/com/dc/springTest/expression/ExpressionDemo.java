@@ -48,6 +48,23 @@ public class ExpressionDemo {
 
 		System.out.println(expression1.getValue(String.class));
 
+		standardEvaluationContext.setVariable("name","dc");
+		System.out.println(spelExpressionParser.parseExpression("{#name}+sda", new ParserContext() {
+			@Override
+			public boolean isTemplate() {
+				return true;
+			}
+
+			@Override
+			public String getExpressionPrefix() {
+				return "{";
+			}
+
+			@Override
+			public String getExpressionSuffix() {
+				return "}";
+			}
+		}).getValue(standardEvaluationContext, String.class));
 
 
 	}

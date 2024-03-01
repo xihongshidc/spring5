@@ -36,5 +36,15 @@ public class Conifguration {
 	}
 
 
+	@Bean({"user"})
+	public User test(){
+		User user = new User();
+		user.setAge("22");
+		user.setName("duancong");
+		Student student = student();
+		System.out.println(student.toString());
+		return user;
+	}
+
 
 }

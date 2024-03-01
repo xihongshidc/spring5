@@ -16,16 +16,14 @@
 
 package org.springframework.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.lang.Nullable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.lang.Nullable;
 
 /**
  * Utility class for working with Strings that have placeholder values in them. A placeholder takes the form
@@ -151,8 +149,10 @@ public class PropertyPlaceholderHelper {
 				// Now obtain the value for the fully resolved key...
 				String propVal = placeholderResolver.resolvePlaceholder(placeholder);
 				if (propVal == null && this.valueSeparator != null) {
+					//valueSeparator 分割符,可以实现 默认值的分割。
 					int separatorIndex = placeholder.indexOf(this.valueSeparator);
 					if (separatorIndex != -1) {
+						//按分隔符进行分割，获取到真正的key，以及key后面对应的value
 						String actualPlaceholder = placeholder.substring(0, separatorIndex);
 						String defaultValue = placeholder.substring(separatorIndex + this.valueSeparator.length());
 						propVal = placeholderResolver.resolvePlaceholder(actualPlaceholder);
